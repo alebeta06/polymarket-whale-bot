@@ -27,17 +27,22 @@ class TradeExecutor:
     def _initialize_client(self):
         """Initialize Polymarket CLOB client"""
         try:
-            # Initialize client with API credentials
+            from py_clob_client.clob_types import ApiCreds
+            
+            # Initialize client with host and private key
             self.client = ClobClient(
-                key=self.settings.polymarket_api_key,
-                secret=self.settings.polymarket_api_secret,
-                passphrase=self.settings.polymarket_api_passphrase,
                 host="https://clob.polymarket.com",
-                chain_id=137  #Polygon mainnet
+                chain_id=137,  # Polygon mainnet
+                key=self.settings.private_key
             )
             
-            # Set private key for signing
-            self.client.set_api_creds(self.client.create_or_derive_api_creds())
+            # Set API credentials
+            creds = ApiCreds(
+                api_key=self.settings.polymarket_api_key,
+                api_secret=self.settings.polymarket_api_secret,
+                api_passphrase=self.settings.polymarket_api_passphrase
+            )
+            self.client.set_api_creds(creds)
             
             log.info("✅ CLOB client initialized successfully")
             

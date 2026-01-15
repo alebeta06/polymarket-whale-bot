@@ -87,7 +87,19 @@ class MarketScanner:
                 data = await response.json()
                 markets = []
                 
-                for market_data in data:
+                # Handle cases where API might return a dict or list
+                market_list = data
+                if isinstance(data, dict):
+                    if "markets" in data:
+                        market_list = data["markets"]
+                    elif "data" in data:
+                        market_list = data["data"]
+                
+                if not isinstance(market_list, list):
+                    log.error(f"Expected list of markets, got {type(market_list)}")
+                    return []
+
+                for market_data in market_list:
                     market = self._parse_market(market_data, category)
                     if market:
                         markets.append(market)
@@ -111,59 +123,77 @@ class MarketScanner:
             Market object or None if parsing fails
         """
         try:
-            # Extract market info
-            market_id = data.get("condition_id") or data.get("id")
-            question = data.get("question", "Unknown")
-            volume = float(data.get("volume", 0))
+            import json
             
-            # Extract outcomes (YES/NO)
-            outcomes = data.get("outcomes", [])
-            if len(outcomes) < 2:
-                log.debug(f"Market {market_id} has less than 2 outcomes, skipping")
+            # Extract basic info
+            market_id = data.get("conditionId") or data.get("id")
+            question = data.get("question", "Unknown")
+            volume = float(data.get("volumeNum") or data.get("volume") or 0)
+            liquidity = float(data.get("liquidityNum") or data.get("liquidity") or 0)
+            
+            # Helper to parse string-encoded JSON fields
+            def parse_json_field(field_name):
+                val = data.get(field_name)
+                if isinstance(val, str) and val.strip().startswith("["):
+                    try:
+                        return json.loads(val)
+                    except:
+                        return []
+                return val if isinstance(val, list) else []
+
+            # Extract outcomes, prices, and token IDs (some come as JSON strings)
+            outcomes_names = parse_json_field("outcomes")
+            prices = parse_json_field("outcomePrices")
+            token_ids = parse_json_field("clobTokenIds")
+            
+            if len(outcomes_names) < 2:
+                # Try fallback for differently structured markets
                 return None
             
             # Find YES and NO outcomes
             yes_outcome = None
             no_outcome = None
             
-            for outcome_data in outcomes:
-                name = outcome_data.get("name", "").upper()
-                price = float(outcome_data.get("price", 0))
-                token_id = outcome_data.get("token_id", "")
-                liquidity = float(outcome_data.get("liquidity", 0))
+            for i, name in enumerate(outcomes_names):
+                upper_name = name.upper()
+                price = float(prices[i]) if i < len(prices) else 0.0
+                token_id = token_ids[i] if i < len(token_ids) else ""
                 
                 outcome = Outcome(
-                    name=name,
+                    name=upper_name,
                     price=price,
                     token_id=token_id,
-                    liquidity=liquidity
+                    liquidity=liquidity # Use market liquidity as proxy
                 )
                 
-                if "YES" in name:
+                if "YES" in upper_name:
                     yes_outcome = outcome
-                elif "NO" in name:
+                elif "NO" in upper_name:
                     no_outcome = outcome
             
             if not yes_outcome or not no_outcome:
-                log.debug(f"Market {market_id} missing YES/NO outcomes, skipping")
                 return None
             
             # Parse end date if available
             end_date = None
-            if "end_date_iso" in data:
-                try:
-                    end_date = datetime.fromisoformat(
-                        data["end_date_iso"].replace("Z", "+00:00")
-                    )
-                except:
-                    pass
+            for key in ["endDateIso", "end_date_iso", "endDate"]:
+                if key in data and data[key]:
+                    try:
+                        val = data[key]
+                        if isinstance(val, str):
+                            end_date = datetime.fromisoformat(
+                                val.replace("Z", "+00:00")
+                            )
+                            break
+                    except:
+                        continue
             
             market = Market(
                 id=market_id,
                 question=question,
                 category=category,
                 volume=volume,
-                liquidity=float(data.get("liquidity", 0)),
+                liquidity=liquidity,
                 yes_outcome=yes_outcome,
                 no_outcome=no_outcome,
                 active=data.get("active", True),
