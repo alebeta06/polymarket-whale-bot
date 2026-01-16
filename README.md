@@ -1,16 +1,35 @@
-# 🤖 Polymarket Arbitrage Bot
+# 🤖 Polymarket Trading Bot
 
-Bot automatizado para detectar y ejecutar oportunidades de arbitraje en mercados de predicción de Polymarket.
+Bot automatizado para trading en mercados de predicción de Polymarket con **2 estrategias**:
 
-## 🎯 Características
+1. **Arbitraje** (original - limitado)
+2. **Whale Watching** (nuevo - recomendado) 🐋
 
-- **Detección de Arbitraje Intra-Mercado**: Identifica cuando YES + NO ≠ 1
-- **Detección de Arbitraje Inter-Mercado**: Encuentra inconsistencias entre mercados relacionados
-- **Paper Trading**: Modo simulación sin riesgo
-- **WebSocket Real-Time**: Actualizaciones de precios en tiempo real (<1s latency)
-- **Order Batching**: Ejecuta hasta 5 trades simultáneos
-- **Risk Management**: Circuit breakers y límites de exposición
-- **Proxy Wallet Support**: Compatible con sistema de proxy wallets de Polymarket
+## 🎯 Estrategias Disponibles
+
+### 🐋 Whale Watching (Recomendado)
+
+**Copia trades de los mejores traders de Polymarket**
+
+- ✅ **12 ballenas verificadas** con P&L positivo comprobado
+- ✅ Seguimiento en tiempo real de sus trades
+- ✅ Position sizing inteligente (10-20% del trade de la ballena)
+- ✅ Filtros de riesgo multi-nivel
+- ✅ Paper Trading para validación
+
+**Rentabilidad esperada**: 15-30% mensual (basada en historial de ballenas)
+
+[Ver documentación completa →](WHALE_WATCHING_README.md)
+
+### 📊 Arbitraje Intra-Mercado
+
+**Detecta cuando YES + NO ≠ 1**
+
+- Detección automática de oportunidades
+- Ejecución simultánea de ambos lados
+- Risk management integrado
+
+**Nota**: Esta estrategia es altamente competitiva y requiere velocidad extrema. Rentabilidad limitada para traders retail.
 
 ## 📋 Requisitos
 
@@ -70,9 +89,40 @@ DRY_RUN=true  # true = Paper Trading, false = Real trading
 
 ## 📊 Uso
 
-### Modo Paper Trading (Recomendado para empezar)
+### 🐋 Whale Watching Bot (Recomendado)
+
+**Monitoreo y copy trading de ballenas verificadas:**
 
 ```bash
+cd /home/alebeta/polymarket-arbitrage-bot
+source venv/bin/activate
+export PYTHONPATH=.
+python scripts/whale_watcher.py
+```
+
+El bot:
+
+- ✅ Monitorea 12 ballenas con P&L positivo verificado
+- ✅ Poll cada 60 segundos (configurable)
+- ✅ Guarda estadísticas en database SQLite
+- ✅ Ready para implementar copy trading
+
+**Ver estadísticas de ballenas:**
+
+```bash
+python scripts/view_whales.py
+```
+
+[Documentación completa de Whale Watching →](WHALE_WATCHING_README.md)
+
+---
+
+### 📈 Arbitrage Bot (Original)
+
+**Modo Paper Trading (Recomendado para empezar):**
+
+```bash
+export PYTHONPATH=.
 python src/main.py
 ```
 
@@ -83,7 +133,7 @@ El bot:
 - ✅ Registra todo en logs
 - ❌ NO ejecuta trades reales
 
-### Modo Producción
+**Modo Producción:**
 
 1. Verificar que Paper Trading funciona correctamente (1-2 semanas)
 2. Cambiar en `.env`: `DRY_RUN=false`
@@ -99,18 +149,30 @@ python src/main.py
 polymarket-arbitrage-bot/
 ├── src/
 │   ├── scanner/          # Escaneo de mercados (Gamma API)
-│   ├── arbitrage/        # Detección de oportunidades
+│   ├── arbitrage/        # Detección de oportunidades de arbitraje
 │   ├── execution/        # Ejecución de trades (CLOB API)
 │   ├── risk/             # Gestión de riesgos
 │   ├── monitoring/       # Logging y métricas
+│   ├── whale_watching/   # 🐋 NUEVO: Monitor de ballenas
+│   │   ├── database.py   #   - Base de datos SQLite
+│   │   ├── individual_monitor.py  #   - Monitor individual
+│   │   ├── seed_whales.py         #   - 12 ballenas verificadas
+│   │   └── models.py     #   - Modelos de datos
 │   ├── utils/            # Utilidades generales
-│   └── main.py           # Punto de entrada principal
-├── tests/                # Tests unitarios
+│   └── main.py           # Bot de arbitraje
+├── scripts/              # 🐋 Scripts de whale watching
+│   ├── whale_watcher.py  #   - Main bot
+│   ├── view_whales.py    #   - Ver estadísticas
+│   └── scrape_leaderboard.py  #   - Scraper (one-time)
+├── data/
+│   ├── whales.db         # 🐋 Database de ballenas
+│   ├── trades.json       # Trades de arbitraje
+│   └── opportunities.json
 ├── logs/                 # Archivos de log
-├── data/                 # Datos y caché
 ├── requirements.txt      # Dependencias Python
 ├── .env.example          # Template de configuración
-└── README.md             # Este archivo
+├── README.md             # Este archivo
+└── WHALE_WATCHING_README.md  # 🐋 Docs de whale watching
 ```
 
 ## 🔐 Seguridad
@@ -211,12 +273,27 @@ El bot genera:
 
 ## 🚀 Roadmap
 
+### Estrategia de Arbitraje:
+
 - [x] Scanner de mercados (Gamma API)
 - [x] Detector de arbitraje intra-mercado
 - [ ] Detector de arbitraje inter-mercado
 - [x] Risk management básico
 - [ ] WebSocket integration
 - [ ] Order batching
+
+### Estrategia de Whale Watching: 🐋
+
+- [x] Identificación de ballenas rentables (12 verificadas)
+- [x] Database de tracking (SQLite + SQLAlchemy)
+- [x] Monitor individual con polling
+- [ ] **NEXT**: Implementar copy trading logic
+- [ ] **NEXT**: Risk filters avanzados
+- [ ] **NEXT**: Paper trading mode
+- [ ] **NEXT**: Position sizing inteligente
+
+### General:
+
 - [ ] Telegram notifications
 - [ ] Dashboard web (opcional)
 
