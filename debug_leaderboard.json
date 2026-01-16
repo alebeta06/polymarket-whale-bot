@@ -1,0 +1,1088 @@
+{
+  "dehydratedState": {
+    "mutations": [],
+    "queries": [
+      {
+        "dehydratedAt": 1768593589837,
+        "state": {
+          "data": [
+            {
+              "rank": 1,
+              "proxyWallet": "0x492442eab586f242b53bda933fd5de859c8a3782",
+              "name": "0x492442EaB586F242B53bDa933fD5dE859c8A3782-1766317541188",
+              "pseudonym": "0x492442EaB586F242B53bDa933fD5dE859c8A3782-1766317541188",
+              "amount": 100503155.08526397,
+              "pnl": -6072768.204685831,
+              "volume": 100503155.08526397,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 2,
+              "proxyWallet": "0xe90bec87d9ef430f27f9dcfe72c34b76967d5da2",
+              "name": "gmanas",
+              "pseudonym": "gmanas",
+              "amount": 83147403.80291998,
+              "pnl": 2006393.4982498288,
+              "volume": 83147403.80291998,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 3,
+              "proxyWallet": "0x6480542954b70a674a74bd1a6015dec362dc8dc5",
+              "name": "tripping",
+              "pseudonym": "tripping",
+              "amount": 63062147.064843,
+              "pnl": 4199.427409878306,
+              "volume": 63062147.064843,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-2136195-6a15a210-77e7-4450-bf86-06670c61864d.jpeg",
+              "profileImageOptimized": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-2136195-6a15a210-77e7-4450-bf86-06670c61864d.jpeg"
+            },
+            {
+              "rank": 4,
+              "proxyWallet": "0x589222a5124a96765443b97a3498d89ffd824ad2",
+              "name": "PurpleThunderBicycleMountain",
+              "pseudonym": "PurpleThunderBicycleMountain",
+              "amount": 62283846.18313202,
+              "pnl": 432297.67383472086,
+              "volume": 62283846.18313202,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 5,
+              "proxyWallet": "0x204f72f35326db932158cba6adff0b9a1da95e14",
+              "name": "swisstony",
+              "pseudonym": "swisstony",
+              "amount": 58433181.79311695,
+              "pnl": 405455.60430163704,
+              "volume": 58433181.79311695,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 6,
+              "proxyWallet": "0xa61ef8773ec2e821962306ca87d4b57e39ff0abd",
+              "name": "risk-manager",
+              "pseudonym": "risk-manager",
+              "amount": 51852248.731203,
+              "pnl": 29477.658897019955,
+              "volume": 51852248.731203,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-910447-e4276f18-6c7b-4e99-8a46-2177423035a0.PNG",
+              "profileImageOptimized": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-910447-e4276f18-6c7b-4e99-8a46-2177423035a0.PNG"
+            },
+            {
+              "rank": 7,
+              "proxyWallet": "0x6a72f61820b26b1fe4d956e17b6dc2a1ea3033ee",
+              "name": "kch123",
+              "pseudonym": "kch123",
+              "amount": 50597135.767744035,
+              "pnl": 3083633.03021459,
+              "volume": 50597135.767744035,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 8,
+              "proxyWallet": "0xdd572169e741c72227589c5cb56b9ddd638d694d",
+              "name": "Igniss",
+              "pseudonym": "Igniss",
+              "amount": 49056192.06638301,
+              "pnl": -108549.43383607254,
+              "volume": 49056192.06638301,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-3239882-03365989-febf-4bdc-a29f-607a8c5a6603.jpg",
+              "profileImageOptimized": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-3239882-03365989-febf-4bdc-a29f-607a8c5a6603.jpg"
+            },
+            {
+              "rank": 9,
+              "proxyWallet": "0x7f69983eb28245bba0d5083502a78744a8f66162",
+              "name": "Account88888",
+              "pseudonym": "Account88888",
+              "amount": 45979217.85515711,
+              "pnl": 257121.21783744247,
+              "volume": 45979217.85515711,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 10,
+              "proxyWallet": "0xc2e7800b5af46e6093872b177b7a5e7f0563be51",
+              "name": "beachboy4",
+              "pseudonym": "beachboy4",
+              "amount": 39084076.712753005,
+              "pnl": -3395342.797537703,
+              "volume": 39084076.712753005,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 11,
+              "proxyWallet": "0xa5ea13a81d2b7e8e424b182bdc1db08e756bd96a",
+              "name": "bossoskil1",
+              "pseudonym": "bossoskil1",
+              "amount": 36704450.77593397,
+              "pnl": -4035586.4129618984,
+              "volume": 36704450.77593397,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 12,
+              "proxyWallet": "0xee613b3fc183ee44f9da9c05f53e2da107e3debf",
+              "name": "sovereign2013",
+              "pseudonym": "sovereign2013",
+              "amount": 36256693.788281076,
+              "pnl": 544794.2764118157,
+              "volume": 36256693.788281076,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 13,
+              "proxyWallet": "0xdc876e6873772d38716fda7f2452a78d426d7ab6",
+              "name": "432614799197",
+              "pseudonym": "432614799197",
+              "amount": 33379623.547535982,
+              "pnl": 1400202.839021393,
+              "volume": 33379623.547535982,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 14,
+              "proxyWallet": "0x507e52ef684ca2dd91f90a9d26d149dd3288beae",
+              "name": "GamblingIsAllYouNeed",
+              "pseudonym": "GamblingIsAllYouNeed",
+              "amount": 32304500.335401,
+              "pnl": 923932.0791914576,
+              "volume": 32304500.335401,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-4070827-b30f95ed-6835-4ac6-a456-f066d6968f97.png",
+              "profileImageOptimized": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-4070827-b30f95ed-6835-4ac6-a456-f066d6968f97.png"
+            },
+            {
+              "rank": 15,
+              "proxyWallet": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea",
+              "name": "RN1",
+              "pseudonym": "RN1",
+              "amount": 29134110.30358791,
+              "pnl": 827877.6452855314,
+              "volume": 29134110.30358791,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-1567750-84001aec-310a-470f-9584-67dfcaa61267.png",
+              "profileImageOptimized": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-1567750-84001aec-310a-470f-9584-67dfcaa61267.png"
+            },
+            {
+              "rank": 16,
+              "proxyWallet": "0x63ce342161250d705dc0b16df89036c8e5f9ba9a",
+              "name": "0x8dxd",
+              "pseudonym": "0x8dxd",
+              "amount": 28685315.99370596,
+              "pnl": 411082.01390501997,
+              "volume": 28685315.99370596,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png",
+              "xUsername": "0x8dxd"
+            },
+            {
+              "rank": 17,
+              "proxyWallet": "0x241f846866c2de4fb67cdb0ca6b963d85e56ef50",
+              "name": "Pestle",
+              "pseudonym": "Pestle",
+              "amount": 28337937.89063999,
+              "pnl": 2184.1523581550127,
+              "volume": 28337937.89063999,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-1793305-ecb4f75a-82a9-4acd-9054-9921831874b4.png",
+              "profileImageOptimized": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-1793305-ecb4f75a-82a9-4acd-9054-9921831874b4.png",
+              "xUsername": "pptpatil"
+            },
+            {
+              "rank": 18,
+              "proxyWallet": "0xd0d6053c3c37e727402d84c14069780d360993aa",
+              "name": "k9Q2mX4L8A7ZP3R",
+              "pseudonym": "k9Q2mX4L8A7ZP3R",
+              "amount": 27985704.04141197,
+              "pnl": 204043.53128264486,
+              "volume": 27985704.04141197,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 19,
+              "proxyWallet": "0x961afce6bd9aec79c5cf09d2d4dac2b434b23361",
+              "name": "CRYINGLITTLEBABY",
+              "pseudonym": "CRYINGLITTLEBABY",
+              "amount": 25794405.593039025,
+              "pnl": 196938.3222681073,
+              "volume": 25794405.593039025,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 20,
+              "proxyWallet": "0x6031b6eed1c97e853c6e0f03ad3ce3529351f96d",
+              "name": "gabagool22",
+              "pseudonym": "gabagool22",
+              "amount": 25744193.162876997,
+              "pnl": 167099.90518002762,
+              "volume": 25744193.162876997,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            }
+          ],
+          "dataUpdateCount": 1,
+          "dataUpdatedAt": 1768593589837,
+          "error": null,
+          "errorUpdateCount": 0,
+          "errorUpdatedAt": 0,
+          "fetchFailureCount": 0,
+          "fetchFailureReason": null,
+          "fetchMeta": null,
+          "isInvalidated": false,
+          "status": "success",
+          "fetchStatus": "idle"
+        },
+        "queryKey": [
+          "/leaderboard",
+          "volume",
+          "30d",
+          1,
+          "overall",
+          null
+        ],
+        "queryHash": "[\"/leaderboard\",\"volume\",\"30d\",1,\"overall\",null]"
+      },
+      {
+        "dehydratedAt": 1768593589837,
+        "state": {
+          "data": [
+            {
+              "rank": 1,
+              "proxyWallet": "0x6a72f61820b26b1fe4d956e17b6dc2a1ea3033ee",
+              "name": "kch123",
+              "pseudonym": "kch123",
+              "amount": 3083633.03021459,
+              "pnl": 3083633.03021459,
+              "volume": 50597135.767744035,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 2,
+              "proxyWallet": "0x006cc834cc092684f1b56626e23bedb3835c16ea",
+              "name": "0x006cc834Cc092684F1B56626E23BEdB3835c16ea-1729683673397",
+              "pseudonym": "0x006cc834Cc092684F1B56626E23BEdB3835c16ea-1729683673397",
+              "amount": 3056229.153979705,
+              "pnl": 3056229.153979705,
+              "volume": 17204254.843211997,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 3,
+              "proxyWallet": "0xdb27bf2ac5d428a9c63dbc914611036855a6c56e",
+              "name": "DrPufferfish",
+              "pseudonym": "DrPufferfish",
+              "amount": 2095820.9683315484,
+              "pnl": 2095820.9683315484,
+              "volume": 25359450.02637401,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 4,
+              "proxyWallet": "0xe90bec87d9ef430f27f9dcfe72c34b76967d5da2",
+              "name": "gmanas",
+              "pseudonym": "gmanas",
+              "amount": 2006393.4982498288,
+              "pnl": 2006393.4982498288,
+              "volume": 83147403.80291998,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 5,
+              "proxyWallet": "0x1bc0d88ca86b9049cf05d642e634836d5ddf4429",
+              "name": "212121212121212121212",
+              "pseudonym": "212121212121212121212",
+              "amount": 1441416.3636233995,
+              "pnl": 1441416.3636233995,
+              "volume": 5459743.607406999,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 6,
+              "proxyWallet": "0xdc876e6873772d38716fda7f2452a78d426d7ab6",
+              "name": "432614799197",
+              "pseudonym": "432614799197",
+              "amount": 1400202.839021393,
+              "pnl": 1400202.839021393,
+              "volume": 33379623.547535982,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 7,
+              "proxyWallet": "0x16b29c50f2439faf627209b2ac0c7bbddaa8a881",
+              "name": "SeriouslySirius",
+              "pseudonym": "SeriouslySirius",
+              "amount": 1258478.1469260664,
+              "pnl": 1258478.1469260664,
+              "volume": 23688597.899988003,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 8,
+              "proxyWallet": "0x37e4728b3c4607fb2b3b205386bb1d1fb1a8c991",
+              "name": "SemyonMarmeladov",
+              "pseudonym": "SemyonMarmeladov",
+              "amount": 1077596.1676823064,
+              "pnl": 1077596.1676823064,
+              "volume": 20223125.082739,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-102792-ee6f6ac0-da9f-45fc-bd69-173d5ddd17cf.jpeg",
+              "profileImageOptimized": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-102792-ee6f6ac0-da9f-45fc-bd69-173d5ddd17cf.jpeg"
+            },
+            {
+              "rank": 9,
+              "proxyWallet": "0xcd9bc2939f0dac121f6ccde59cca5e0b6a91414d",
+              "name": "BITCOINTO500K",
+              "pseudonym": "BITCOINTO500K",
+              "amount": 1001795.5039079678,
+              "pnl": 1001795.5039079678,
+              "volume": 8965369.735891998,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 10,
+              "proxyWallet": "0x507e52ef684ca2dd91f90a9d26d149dd3288beae",
+              "name": "GamblingIsAllYouNeed",
+              "pseudonym": "GamblingIsAllYouNeed",
+              "amount": 923932.0791914576,
+              "pnl": 923932.0791914576,
+              "volume": 32304500.335401,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-4070827-b30f95ed-6835-4ac6-a456-f066d6968f97.png",
+              "profileImageOptimized": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-4070827-b30f95ed-6835-4ac6-a456-f066d6968f97.png"
+            },
+            {
+              "rank": 11,
+              "proxyWallet": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea",
+              "name": "RN1",
+              "pseudonym": "RN1",
+              "amount": 827877.6452855314,
+              "pnl": 827877.6452855314,
+              "volume": 29134110.30358791,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-1567750-84001aec-310a-470f-9584-67dfcaa61267.png",
+              "profileImageOptimized": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-1567750-84001aec-310a-470f-9584-67dfcaa61267.png"
+            },
+            {
+              "rank": 12,
+              "proxyWallet": "0xb889590a2fab0c810584a660518c4c020325a430",
+              "name": "Ems123",
+              "pseudonym": "Ems123",
+              "amount": 797169.0115169941,
+              "pnl": 797169.0115169941,
+              "volume": 7789796.177479,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 13,
+              "proxyWallet": "0x98f7207b2461aaa89f89945ddc1f0bee628fb3e4",
+              "name": "987654123321",
+              "pseudonym": "987654123321",
+              "amount": 640570.9005114674,
+              "pnl": 640570.9005114674,
+              "volume": 9291066.979216002,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 14,
+              "proxyWallet": "0xee613b3fc183ee44f9da9c05f53e2da107e3debf",
+              "name": "sovereign2013",
+              "pseudonym": "sovereign2013",
+              "amount": 544794.2764118157,
+              "pnl": 544794.2764118157,
+              "volume": 36256693.788281076,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 15,
+              "proxyWallet": "0xe74a4446efd66a4de690962938f550d8921a40ee",
+              "name": "0xe74A4446EfD66A4de690962938F550D8921A40Ee-1764438981358",
+              "pseudonym": "0xe74A4446EfD66A4de690962938F550D8921A40Ee-1764438981358",
+              "amount": 434701.6140470438,
+              "pnl": 434701.6140470438,
+              "volume": 1572967.169514,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 16,
+              "proxyWallet": "0x589222a5124a96765443b97a3498d89ffd824ad2",
+              "name": "PurpleThunderBicycleMountain",
+              "pseudonym": "PurpleThunderBicycleMountain",
+              "amount": 432297.67383472086,
+              "pnl": 432297.67383472086,
+              "volume": 62283846.18313202,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 17,
+              "proxyWallet": "0xf68a281980f8c13828e84e147e3822381d6e5b1b",
+              "name": "FireKevinPatullo",
+              "pseudonym": "FireKevinPatullo",
+              "amount": 427641.3503639871,
+              "pnl": 427641.3503639871,
+              "volume": 11231273.397623003,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-2123373-f5e8c62c-f46e-443c-a57e-1ed7c2581a1c.jpg",
+              "profileImageOptimized": "https://polymarket-upload.s3.us-east-2.amazonaws.com/profile-image-2123373-f5e8c62c-f46e-443c-a57e-1ed7c2581a1c.jpg",
+              "xUsername": "Nooserac"
+            },
+            {
+              "rank": 18,
+              "proxyWallet": "0x6e82b93eb57b01a63027bd0c6d2f3f04934a752c",
+              "name": "0x24357454d8d1a0cc93a6c25fd490467372bc2454",
+              "pseudonym": "0x24357454d8d1a0cc93a6c25fd490467372bc2454",
+              "amount": 421722.4616834534,
+              "pnl": 421722.4616834534,
+              "volume": 3914302.0642550006,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 19,
+              "proxyWallet": "0x56e2c952f9b953521f08ef0eb0c15473a1fa4b88",
+              "name": "NBA101",
+              "pseudonym": "NBA101",
+              "amount": 414527.2397297695,
+              "pnl": 414527.2397297695,
+              "volume": 4110226.0330989994,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png"
+            },
+            {
+              "rank": 20,
+              "proxyWallet": "0x63ce342161250d705dc0b16df89036c8e5f9ba9a",
+              "name": "0x8dxd",
+              "pseudonym": "0x8dxd",
+              "amount": 411082.01390501997,
+              "pnl": 411082.01390501997,
+              "volume": 28685315.99370596,
+              "realized": 0,
+              "unrealized": 0,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fallback-image.png",
+              "xUsername": "0x8dxd"
+            }
+          ],
+          "dataUpdateCount": 1,
+          "dataUpdatedAt": 1768593589837,
+          "error": null,
+          "errorUpdateCount": 0,
+          "errorUpdatedAt": 0,
+          "fetchFailureCount": 0,
+          "fetchFailureReason": null,
+          "fetchMeta": null,
+          "isInvalidated": false,
+          "status": "success",
+          "fetchStatus": "idle"
+        },
+        "queryKey": [
+          "/leaderboard",
+          "profit",
+          "30d",
+          1,
+          "overall",
+          null
+        ],
+        "queryHash": "[\"/leaderboard\",\"profit\",\"30d\",1,\"overall\",null]"
+      },
+      {
+        "dehydratedAt": 1768593589837,
+        "state": {
+          "data": [
+            {
+              "winRank": "1",
+              "proxyWallet": "0x16b29c50f2439faf627209b2ac0c7bbddaa8a881",
+              "userName": "SeriouslySirius",
+              "eventSlug": "nfl-bal-pit-2026-01-04",
+              "eventTitle": "Ravens vs. Steelers",
+              "initialValue": 1461278.616289436,
+              "finalValue": 2962375.2703050235,
+              "pnl": 1501096.6540155879,
+              "profileImage": ""
+            },
+            {
+              "winRank": "2",
+              "proxyWallet": "0xdc876e6873772d38716fda7f2452a78d426d7ab6",
+              "userName": "432614799197",
+              "eventSlug": "nfl-buf-jax-2026-01-11",
+              "eventTitle": "Bills vs. Jaguars",
+              "initialValue": 1562189.8180854756,
+              "finalValue": 2869014.2067734757,
+              "pnl": 1306824.388688,
+              "profileImage": ""
+            },
+            {
+              "winRank": "3",
+              "proxyWallet": "0xdc876e6873772d38716fda7f2452a78d426d7ab6",
+              "userName": "432614799197",
+              "eventSlug": "nfl-gb-chi-2026-01-10",
+              "eventTitle": "Packers vs. Bears",
+              "initialValue": 1191229.202674596,
+              "finalValue": 2294738.311735596,
+              "pnl": 1103509.109061,
+              "profileImage": ""
+            },
+            {
+              "winRank": "4",
+              "proxyWallet": "0x0d3b10b8eac8b089c6e4a695e65d8e044167c46b",
+              "userName": "bossoskil",
+              "eventSlug": "cfb-mia-ohiost-2025-12-31",
+              "eventTitle": "Miami vs. Ohio State",
+              "initialValue": 385510.9135345888,
+              "finalValue": 1446914.2142515888,
+              "pnl": 1061403.300717,
+              "profileImage": ""
+            },
+            {
+              "winRank": "5",
+              "proxyWallet": "0xc2e7800b5af46e6093872b177b7a5e7f0563be51",
+              "userName": "beachboy4",
+              "eventSlug": "efl-cfc-ars-2026-01-14",
+              "eventTitle": "Chelsea FC vs Arsenal FC",
+              "initialValue": 1085408.596469206,
+              "finalValue": 2087115.5124276446,
+              "pnl": 1001706.9159584385,
+              "profileImage": ""
+            },
+            {
+              "winRank": "6",
+              "proxyWallet": "0xccb290b1c145d1c95695d3756346bba9f1398586",
+              "userName": "hioa",
+              "eventSlug": "nfl-bal-pit-2026-01-04",
+              "eventTitle": "Ravens vs. Steelers",
+              "initialValue": 503578.63929645874,
+              "finalValue": 1481118.0012184586,
+              "pnl": 977539.361922,
+              "profileImage": ""
+            },
+            {
+              "winRank": "7",
+              "proxyWallet": "0xc2e7800b5af46e6093872b177b7a5e7f0563be51",
+              "userName": "beachboy4",
+              "eventSlug": "lal-elc-vil-2026-01-03",
+              "eventTitle": "Elche CF vs. Villarreal CF",
+              "initialValue": 729037.6991501739,
+              "finalValue": 1664838.3298354093,
+              "pnl": 935800.6306852355,
+              "profileImage": ""
+            },
+            {
+              "winRank": "8",
+              "proxyWallet": "0x8b5a7da2fdf239b51b9c68a2a1a35bb156d200f2",
+              "userName": "Joe-Biden",
+              "eventSlug": "russia-x-ukraine-ceasefire-in-2025",
+              "eventTitle": "Russia x Ukraine ceasefire in 2025?",
+              "initialValue": 511725.4899950115,
+              "finalValue": 1443824.0031040115,
+              "pnl": 932098.513109,
+              "profileImage": "https://polymarket-upload.s3.us-east-2.amazonaws.com/biden_3_39755_1718726468035.jpg"
+            },
+            {
+              "winRank": "9",
+              "proxyWallet": "0x0d3b10b8eac8b089c6e4a695e65d8e044167c46b",
+              "userName": "bossoskil",
+              "eventSlug": "cfb-miss-ga-2026-01-01",
+              "eventTitle": "Ole Miss vs. Georgia",
+              "initialValue": 643211.5382853367,
+              "finalValue": 1430849.2516163366,
+              "pnl": 787637.713331,
+              "profileImage": ""
+            },
+            {
+              "winRank": "10",
+              "proxyWallet": "0xa5ea13a81d2b7e8e424b182bdc1db08e756bd96a",
+              "userName": "bossoskil1",
+              "eventSlug": "cfb-mia-miss-2026-01-08",
+              "eventTitle": "Miami vs. Ole Miss",
+              "initialValue": 1158079.4476403191,
+              "finalValue": 1937810.5189343193,
+              "pnl": 779731.071294,
+              "profileImage": ""
+            },
+            {
+              "winRank": "11",
+              "proxyWallet": "0x492442eab586f242b53bda933fd5de859c8a3782",
+              "userName": "0x492442EaB586F242B53bDa933fD5dE859c8A3782-1766317541188",
+              "eventSlug": "cbb-delst-howrd-2026-01-12",
+              "eventTitle": "Delaware State Hornets vs. Howard Bison",
+              "initialValue": 691319.15223345,
+              "finalValue": 1421758.97999945,
+              "pnl": 730439.8277660001,
+              "profileImage": ""
+            },
+            {
+              "winRank": "12",
+              "proxyWallet": "0x006cc834cc092684f1b56626e23bedb3835c16ea",
+              "userName": "0x006cc834Cc092684F1B56626E23BEdB3835c16ea-1729683673397",
+              "eventSlug": "epl-mac-che-2026-01-04",
+              "eventTitle": "Manchester City FC vs. Chelsea FC",
+              "initialValue": 330000.00000000006,
+              "finalValue": 1000000,
+              "pnl": 670000,
+              "profileImage": ""
+            },
+            {
+              "winRank": "13",
+              "proxyWallet": "0x0d3b10b8eac8b089c6e4a695e65d8e044167c46b",
+              "userName": "bossoskil",
+              "eventSlug": "nfl-sea-sf-2026-01-04",
+              "eventTitle": "Seahawks vs. 49ers",
+              "initialValue": 1354690.065113877,
+              "finalValue": 1999374.072302877,
+              "pnl": 644684.007189,
+              "profileImage": ""
+            },
+            {
+              "winRank": "14",
+              "proxyWallet": "0x492442eab586f242b53bda933fd5de859c8a3782",
+              "userName": "0x492442EaB586F242B53bDa933fD5dE859c8A3782-1766317541188",
+              "eventSlug": "cbb-mdes-norfst-2026-01-12",
+              "eventTitle": "Maryland Eastern Shore Hawks vs. Norfolk State Spartans",
+              "initialValue": 636344.1815869499,
+              "finalValue": 1266660.6099989498,
+              "pnl": 630316.428412,
+              "profileImage": ""
+            },
+            {
+              "winRank": "15",
+              "proxyWallet": "0xdc876e6873772d38716fda7f2452a78d426d7ab6",
+              "userName": "432614799197",
+              "eventSlug": "nfl-sf-phi-2026-01-11",
+              "eventTitle": "49ers vs. Eagles",
+              "initialValue": 682147.47573591,
+              "finalValue": 1282063.8925080746,
+              "pnl": 599916.4167721646,
+              "profileImage": ""
+            },
+            {
+              "winRank": "16",
+              "proxyWallet": "0xc2e7800b5af46e6093872b177b7a5e7f0563be51",
+              "userName": "beachboy4",
+              "eventSlug": "nba-min-cle-2026-01-10",
+              "eventTitle": "Timberwolves vs. Cavaliers",
+              "initialValue": 600438.7605005476,
+              "finalValue": 1183732.3417625476,
+              "pnl": 583293.581262,
+              "profileImage": ""
+            },
+            {
+              "winRank": "17",
+              "proxyWallet": "0x492442eab586f242b53bda933fd5de859c8a3782",
+              "userName": "0x492442EaB586F242B53bDa933fD5dE859c8A3782-1766317541188",
+              "eventSlug": "nhl-lak-wpg-2026-01-09",
+              "eventTitle": "Kings vs. Jets",
+              "initialValue": 534689.12692198,
+              "finalValue": 1108233.65999898,
+              "pnl": 573544.533077,
+              "profileImage": ""
+            },
+            {
+              "winRank": "18",
+              "proxyWallet": "0xc2e7800b5af46e6093872b177b7a5e7f0563be51",
+              "userName": "beachboy4",
+              "eventSlug": "nba-lac-det-2026-01-10",
+              "eventTitle": "Clippers vs. Pistons",
+              "initialValue": 548708.1392868598,
+              "finalValue": 1104091.6164868597,
+              "pnl": 555383.4772,
+              "profileImage": ""
+            },
+            {
+              "winRank": "19",
+              "proxyWallet": "0x0d3b10b8eac8b089c6e4a695e65d8e044167c46b",
+              "userName": "bossoskil",
+              "eventSlug": "nfl-dal-nyg-2026-01-04",
+              "eventTitle": "Cowboys vs. Giants",
+              "initialValue": 562609.1262442465,
+              "finalValue": 1105075.0461172466,
+              "pnl": 542465.919873,
+              "profileImage": ""
+            },
+            {
+              "winRank": "20",
+              "proxyWallet": "0x006cc834cc092684f1b56626e23bedb3835c16ea",
+              "userName": "0x006cc834Cc092684F1B56626E23BEdB3835c16ea-1729683673397",
+              "eventSlug": "epl-liv-lee-2026-01-01",
+              "eventTitle": "Liverpool FC vs. Leeds United FC",
+              "initialValue": 268000.87499499996,
+              "finalValue": 800004.9999999999,
+              "pnl": 532004.1250049999,
+              "profileImage": ""
+            }
+          ],
+          "dataUpdateCount": 1,
+          "dataUpdatedAt": 1768593589837,
+          "error": null,
+          "errorUpdateCount": 0,
+          "errorUpdatedAt": 0,
+          "fetchFailureCount": 0,
+          "fetchFailureReason": null,
+          "fetchMeta": null,
+          "isInvalidated": false,
+          "status": "success",
+          "fetchStatus": "idle"
+        },
+        "queryKey": [
+          "/leaderboard",
+          "biggestWins",
+          "30d",
+          20,
+          "overall"
+        ],
+        "queryHash": "[\"/leaderboard\",\"biggestWins\",\"30d\",20,\"overall\"]"
+      },
+      {
+        "dehydratedAt": 1768593589837,
+        "state": {
+          "data": [
+            {
+              "id": "100215",
+              "label": "All",
+              "slug": "all",
+              "forceShow": false,
+              "updatedAt": "2026-01-16T19:21:45.523597Z"
+            },
+            {
+              "id": "2",
+              "label": "Politics",
+              "slug": "politics",
+              "forceShow": false,
+              "publishedAt": "2023-10-25 18:55:50.674+00",
+              "updatedBy": 13,
+              "createdAt": "2023-10-25T18:55:50.681Z",
+              "updatedAt": "2026-01-15T22:12:39.635328Z",
+              "forceHide": true
+            },
+            {
+              "id": "1",
+              "label": "Sports",
+              "slug": "sports",
+              "forceShow": false,
+              "publishedAt": "2023-10-24 22:37:50.296+00",
+              "updatedBy": 15,
+              "createdAt": "2023-10-24T22:37:50.31Z",
+              "updatedAt": "2025-12-18T02:44:02.245397Z",
+              "forceHide": true
+            },
+            {
+              "id": "21",
+              "label": "Crypto",
+              "slug": "crypto",
+              "forceShow": false,
+              "publishedAt": "2023-11-02 21:03:54.55+00",
+              "updatedBy": 15,
+              "createdAt": "2023-11-02T21:03:54.564Z",
+              "updatedAt": "2026-01-16T19:21:38.888557Z"
+            },
+            {
+              "id": "120",
+              "label": "Finance",
+              "slug": "finance",
+              "forceShow": false,
+              "publishedAt": "2023-11-02 21:22:21.615+00",
+              "createdAt": "2023-11-02T21:22:21.62Z",
+              "updatedAt": "2026-01-15T22:12:50.658365Z"
+            },
+            {
+              "id": "100265",
+              "label": "Geopolitics",
+              "slug": "geopolitics",
+              "forceShow": true,
+              "createdAt": "2024-06-12T20:13:03.615956Z",
+              "updatedAt": "2026-01-16T19:21:45.507875Z"
+            },
+            {
+              "id": "1013",
+              "label": "Earnings",
+              "slug": "earnings",
+              "forceShow": false,
+              "publishedAt": "2024-02-06 19:27:48.024+00",
+              "createdAt": "2024-02-06T19:27:48.029Z",
+              "updatedAt": "2026-01-15T22:12:46.502664Z"
+            },
+            {
+              "id": "1401",
+              "label": "Tech",
+              "slug": "tech",
+              "forceShow": false,
+              "publishedAt": "2024-02-21 23:06:12.305+00",
+              "createdAt": "2024-02-21T23:06:12.324Z",
+              "updatedAt": "2026-01-16T19:21:38.848861Z"
+            },
+            {
+              "id": "596",
+              "label": "Culture",
+              "slug": "pop-culture",
+              "forceShow": false,
+              "publishedAt": "2023-11-29 18:40:13.013+00",
+              "createdAt": "2023-11-29T18:40:14.63Z",
+              "updatedAt": "2026-01-15T22:12:35.591029Z"
+            },
+            {
+              "id": "101970",
+              "label": "World",
+              "slug": "world",
+              "forceShow": false,
+              "createdAt": "2025-03-19T23:36:08.498099Z",
+              "updatedAt": "2026-01-15T22:11:44.300983Z"
+            },
+            {
+              "id": "100328",
+              "label": "Economy",
+              "slug": "economy",
+              "forceShow": false,
+              "createdAt": "2024-08-05T05:34:54.235643Z",
+              "updatedAt": "2026-01-16T19:21:00.007848Z"
+            },
+            {
+              "id": "103037",
+              "label": "Climate & Science",
+              "slug": "climate-science",
+              "forceShow": false,
+              "createdAt": "2025-12-30T23:31:52.33537Z",
+              "updatedAt": "2026-01-16T19:21:20.655637Z"
+            },
+            {
+              "id": "144",
+              "label": "Elections",
+              "slug": "elections",
+              "forceShow": false,
+              "publishedAt": "2023-11-02 21:24:31.008+00",
+              "updatedBy": 13,
+              "createdAt": "2023-11-02T21:24:31.198Z",
+              "updatedAt": "2026-01-15T22:11:32.104624Z",
+              "forceHide": true
+            },
+            {
+              "id": "100343",
+              "label": "Mentions",
+              "slug": "mention-markets",
+              "forceShow": false,
+              "createdAt": "2024-08-16T02:29:11.548984Z",
+              "updatedAt": "2026-01-15T22:12:39.582419Z"
+            }
+          ],
+          "dataUpdateCount": 1,
+          "dataUpdatedAt": 1768593589831,
+          "error": null,
+          "errorUpdateCount": 0,
+          "errorUpdatedAt": 0,
+          "fetchFailureCount": 0,
+          "fetchFailureReason": null,
+          "fetchMeta": null,
+          "isInvalidated": false,
+          "status": "success",
+          "fetchStatus": "idle"
+        },
+        "queryKey": [
+          "/api/tags",
+          "filteredTags",
+          "102982",
+          "active"
+        ],
+        "queryHash": "[\"/api/tags\",\"filteredTags\",\"102982\",\"active\"]"
+      },
+      {
+        "dehydratedAt": 1768593589837,
+        "state": {
+          "data": [
+            {
+              "name": "poly_geo",
+              "description": "Use the internal polymarket geolocation service.",
+              "enabled": true,
+              "userEnrolledBy": {
+                "type": "split_feature_flag_rule",
+                "percent": 1
+              },
+              "version": "4a5b8d89cc842e4f21c8a36ab6d07115e89b4fad"
+            },
+            {
+              "name": "notifications_v2",
+              "description": "Improved notification preferences and types.",
+              "enabled": true,
+              "userEnrolledBy": {
+                "type": "allowlist_feature_flag_rule",
+                "allowlistAddresses": []
+              },
+              "version": "d36219f005fa6abe4b245b3582e0c7f9162b9594"
+            },
+            {
+              "name": "funkit_deposit",
+              "description": "Use the funkit based deposit flow.",
+              "enabled": true,
+              "userEnrolledBy": {
+                "type": "split_feature_flag_rule",
+                "percent": 1
+              },
+              "version": "0b9302a9c59ae035cfe7d5545781ddfb1c7aa02f"
+            },
+            {
+              "name": "funkit_withdraw",
+              "description": "Use the funkit based withdrawal flow.",
+              "enabled": false,
+              "userEnrolledBy": {
+                "type": "allowlist_feature_flag_rule",
+                "allowlistAddresses": []
+              },
+              "version": "24cb597a08060f21ba65bd820a9ef4aaac54a66e"
+            },
+            {
+              "name": "authenticated_book_ws",
+              "description": "Use the funkit based deposit flow.",
+              "enabled": true,
+              "userEnrolledBy": {
+                "type": "split_feature_flag_rule",
+                "percent": 1
+              },
+              "version": "37528e449737734ab04409041e36708e9c0ea9c5"
+            },
+            {
+              "name": "rfq",
+              "description": "Request for Quote Maker & Taker UI",
+              "enabled": true,
+              "userEnrolledBy": {
+                "type": "allowlist_feature_flag_rule",
+                "allowlistAddresses": [
+                  "0x8c74b4eef9a894433B8126aA11d1345efb2B0488",
+                  "0x1B3CB941Da6aae2481147e8C177306950fF7Be0B",
+                  "0x5cF81c5c4500429f46025B5C0251C9702618d9E7",
+                  "0xa772dE12507bF3fa3B344e8E7826b3bb6d14f88C",
+                  "0x505da8075db50c4fe971aacf4b56cea1289c87b2",
+                  "0x4b27447b0370371b9e2b25be6845d7f144cec899",
+                  "0x6FAC4C06086fA4De0728e85a6C12d46B74C76D7e",
+                  "0x1D507F92d6577b4DED3e864Df93549266D12FB34"
+                ]
+              },
+              "version": "2024703a0e61d658af66f2d2a4ea1476ce09e27b"
+            },
+            {
+              "name": "mobile_sports_overlay_v2",
+              "description": "Improved in-game view for sports markets.",
+              "enabled": true,
+              "userEnrolledBy": {
+                "type": "allowlist_feature_flag_rule",
+                "allowlistAddresses": []
+              },
+              "version": "029a9e71e0bc0e4864446298bea6009acaf7b26e"
+            },
+            {
+              "name": "async_order_submission",
+              "description": "Reduce market order latency.",
+              "enabled": true,
+              "userEnrolledBy": {
+                "type": "allowlist_feature_flag_rule",
+                "allowlistAddresses": []
+              },
+              "version": "80dcdbb0e1083774c87c7d31d113994c831e5a05"
+            },
+            {
+              "name": "sports_websocket",
+              "description": "Enable updates from the sports websocket.",
+              "enabled": true,
+              "userEnrolledBy": {
+                "type": "allowlist_feature_flag_rule",
+                "allowlistAddresses": []
+              },
+              "version": "69188cb32f3f8b050c961e6ba792a3679a7e4082"
+            },
+            {
+              "name": "language_selector",
+              "description": "Show/hide language selector in navigation",
+              "enabled": true,
+              "userEnrolledBy": {
+                "type": "split_feature_flag_rule",
+                "percent": 1
+              },
+              "version": "27ed1f8697d9a233c1331f5d0154e13426079218"
+            }
+          ],
+          "dataUpdateCount": 1,
+          "dataUpdatedAt": 1768593589689,
+          "error": null,
+          "errorUpdateCount": 0,
+          "errorUpdatedAt": 0,
+          "fetchFailureCount": 0,
+          "fetchFailureReason": null,
+          "fetchMeta": null,
+          "isInvalidated": false,
+          "status": "success",
+          "fetchStatus": "idle"
+        },
+        "queryKey": [
+          "account",
+          "featureFlags",
+          ""
+        ],
+        "queryHash": "[\"account\",\"featureFlags\",\"\"]"
+      }
+    ]
+  },
+  "initialTime": "monthly",
+  "initialCategory": "overall",
+  "initialSort": "profit"
+}
