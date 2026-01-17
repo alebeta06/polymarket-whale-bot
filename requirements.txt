@@ -1,19 +1,15 @@
-# Polymarket Bot Dependencies
-# Core API Client
-py-clob-client>=0.25.0
+# Polymarket Whale Bot - Dependencies
 
-# Web3 & Blockchain
-web3>=6.0.0
-eth-account>=0.9.0
+# Database
+sqlalchemy>=2.0.0
 
 # HTTP & Async
 requests>=2.31.0
 aiohttp>=3.9.0
 websockets>=12.0
 
-# Data Processing
-pandas>=2.0.0
-numpy>=1.24.0
+# HTML Parsing (for leaderboard scraper)
+beautifulsoup4>=4.12.0
 
 # Configuration & Environment
 python-dotenv>=1.0.0
@@ -23,11 +19,15 @@ pydantic-settings>=2.0.0
 # Logging
 loguru>=0.7.0
 
-# Testing
-pytest>=7.4.0
-pytest-asyncio>=0.21.0
-pytest-mock>=3.12.0
-
 # Utils
 python-dateutil>=2.8.0
-pytz>=2023.3
+
+# Testing (optional)
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+
+# Future: Copy Trading (Fase 2)
+# Uncomment when implementing copy trading logic:
+# py-clob-client>=0.25.0
+# web3>=6.0.0
+# eth-account>=0.9.0

@@ -1,15 +1,10 @@
-# 🤖 Polymarket Trading Bot
+# 🐋 Polymarket Whale Bot
 
-Bot automatizado para trading en mercados de predicción de Polymarket con **2 estrategias**:
+Bot automatizado para **copy trading** en Polymarket siguiendo a las ballenas más exitosas.
 
-1. **Arbitraje** (original - limitado)
-2. **Whale Watching** (nuevo - recomendado) 🐋
+## 🎯 Estrategia: Whale Watching
 
-## 🎯 Estrategias Disponibles
-
-### 🐋 Whale Watching (Recomendado)
-
-**Copia trades de los mejores traders de Polymarket**
+**Copia trades de los 12 mejores traders de Polymarket**
 
 - ✅ **12 ballenas verificadas** con P&L positivo comprobado
 - ✅ Seguimiento en tiempo real de sus trades
@@ -19,83 +14,35 @@ Bot automatizado para trading en mercados de predicción de Polymarket con **2 e
 
 **Rentabilidad esperada**: 15-30% mensual (basada en historial de ballenas)
 
-[Ver documentación completa →](WHALE_WATCHING_README.md)
+**Estado actual**: Fase 1 completada ✅ - Listo para Fase 2 (copy trading logic)
 
-### 📊 Arbitraje Intra-Mercado
+[📖 Ver documentación completa →](WHALE_WATCHING_README.md)
 
-**Detecta cuando YES + NO ≠ 1**
-
-- Detección automática de oportunidades
-- Ejecución simultánea de ambos lados
-- Risk management integrado
-
-**Nota**: Esta estrategia es altamente competitiva y requiere velocidad extrema. Rentabilidad limitada para traders retail.
+---
 
 ## 📋 Requisitos
 
 - Python 3.9+
-- Cuenta en Polymarket con API Keys
-- Wallet Phantom con Polygon configurado
-- USDC en Polygon para trading (mínimo recomendado: $500)
+- Cuenta en Polymarket (solo necesaria para Fase 2 - copy trading)
+- USDC en Polygon (solo para trading real, no para monitoreo)
 
-## 🚀 Instalación
+---
 
-### 1. Clonar el repositorio
+## 🚀 Quick Start
 
-```bash
-cd /home/alebeta/polymarket-arbitrage-bot
-```
-
-### 2. Crear entorno virtual
+### 1. Clonar e instalar
 
 ```bash
+git clone https://github.com/alebeta06/polymarket-whale-bot.git
+cd polymarket-whale-bot
 python3 -m venv venv
 source venv/bin/activate
-```
-
-### 3. Instalar dependencias
-
-```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configurar variables de entorno
+### 2. Ejecutar el monitor
 
 ```bash
-cp .env.example .env
-nano .env  # Editar con tus credenciales
-```
-
-**⚠️ IMPORTANTE**: Nunca compartas tu archivo `.env` ni lo subas a GitHub.
-
-### 5. Variables críticas a configurar:
-
-```bash
-# API Keys de Polymarket (desde Builder Settings)
-POLYMARKET_API_KEY=tu_api_key
-POLYMARKET_API_SECRET=tu_api_secret
-POLYMARKET_API_PASSPHRASE=tu_passphrase
-
-# Private Key de Phantom (MANTENER SEGURA)
-PRIVATE_KEY=0xtu_private_key
-
-# Direcciones
-EOA_ADDRESS=0xtu_direccion_phantom_polygon
-PROXY_WALLET_ADDRESS=0xtu_direccion_polymarket
-
-# Modo de operación
-DRY_RUN=true  # true = Paper Trading, false = Real trading
-```
-
-## 📊 Uso
-
-### 🐋 Whale Watching Bot (Recomendado)
-
-**Monitoreo y copy trading de ballenas verificadas:**
-
-```bash
-cd /home/alebeta/polymarket-arbitrage-bot
-source venv/bin/activate
 export PYTHONPATH=.
 python scripts/whale_watcher.py
 ```
@@ -104,203 +51,159 @@ El bot:
 
 - ✅ Monitorea 12 ballenas con P&L positivo verificado
 - ✅ Poll cada 60 segundos (configurable)
-- ✅ Guarda estadísticas en database SQLite
-- ✅ Ready para implementar copy trading
+- ✅ Guarda estadísticas en database SQLite (`data/whales.db`)
+- ✅ No requiere API keys (solo monitoreo)
 
-**Ver estadísticas de ballenas:**
+### 3. Ver estadísticas
 
 ```bash
 python scripts/view_whales.py
 ```
 
-[Documentación completa de Whale Watching →](WHALE_WATCHING_README.md)
-
 ---
-
-### 📈 Arbitrage Bot (Original)
-
-**Modo Paper Trading (Recomendado para empezar):**
-
-```bash
-export PYTHONPATH=.
-python src/main.py
-```
-
-El bot:
-
-- ✅ Detecta oportunidades reales
-- ✅ Calcula ganancias proyectadas
-- ✅ Registra todo en logs
-- ❌ NO ejecuta trades reales
-
-**Modo Producción:**
-
-1. Verificar que Paper Trading funciona correctamente (1-2 semanas)
-2. Cambiar en `.env`: `DRY_RUN=false`
-3. Ejecutar:
-
-```bash
-python src/main.py
-```
 
 ## 📁 Estructura del Proyecto
 
 ```
-polymarket-arbitrage-bot/
+polymarket-whale-bot/
 ├── src/
-│   ├── scanner/          # Escaneo de mercados (Gamma API)
-│   ├── arbitrage/        # Detección de oportunidades de arbitraje
-│   ├── execution/        # Ejecución de trades (CLOB API)
-│   ├── risk/             # Gestión de riesgos
-│   ├── monitoring/       # Logging y métricas
-│   ├── whale_watching/   # 🐋 NUEVO: Monitor de ballenas
-│   │   ├── database.py   #   - Base de datos SQLite
-│   │   ├── individual_monitor.py  #   - Monitor individual
-│   │   ├── seed_whales.py         #   - 12 ballenas verificadas
-│   │   └── models.py     #   - Modelos de datos
-│   ├── utils/            # Utilidades generales
-│   └── main.py           # Bot de arbitraje
-├── scripts/              # 🐋 Scripts de whale watching
-│   ├── whale_watcher.py  #   - Main bot
-│   ├── view_whales.py    #   - Ver estadísticas
-│   └── scrape_leaderboard.py  #   - Scraper (one-time)
+│   ├── whale_watching/      # 🐋 Módulo principal
+│   │   ├── database.py      #   - SQLite database manager
+│   │   ├── individual_monitor.py  #   - Monitor de ballenas
+│   │   ├── seed_whales.py   #   - 12 ballenas verificadas
+│   │   ├── models.py        #   - Modelos Pydantic
+│   │   └── data_api.py      #   - Cliente Data API
+│   ├── config.py            # Configuración general
+│   └── utils/               # Utilidades
+├── scripts/
+│   ├── whale_watcher.py     # 🎯 Script principal
+│   ├── view_whales.py       # Ver estadísticas
+│   └── scrape_leaderboard.py  # Scraper (one-time use)
 ├── data/
-│   ├── whales.db         # 🐋 Database de ballenas
-│   ├── trades.json       # Trades de arbitraje
-│   └── opportunities.json
-├── logs/                 # Archivos de log
-├── requirements.txt      # Dependencias Python
-├── .env.example          # Template de configuración
-├── README.md             # Este archivo
-└── WHALE_WATCHING_README.md  # 🐋 Docs de whale watching
+│   └── whales.db            # Database SQLite
+├── requirements.txt
+├── .env.example
+└── README.md
 ```
+
+---
+
+## 🐋 Las 12 Ballenas Monitoreadas
+
+### 🏆 Consistentes (Top Mes + Semana):
+
+```
+1. 0x006cc834cc092684f1b56626e23bedb3835c16ea
+2. 0x6a72f61820b26b1fe4d956e17b6dc2a1ea3033ee
+3. 0xe90bec87d9ef430f27f9dcfe72c34b76967d5da2
+4. 0xdb27bf2ac5d428a9c63dbc914611036855a6c56e
+5. 0x1bc0d88ca86b9049cf05d642e634836d5ddf4429
+6. 0xdc876e6873772d38716fda7f2452a78d426d7ab6
+7. 0xcd9bc2939f0dac121f6ccde59cca5e0b6a91414d
+```
+
+### 📈 Top Mensuales:
+
+```
+8. 0x16b29c50f2439faf627209b2ac0c7bbddaa8a881
+9. 0x37e4728b3c4607fb2b3b205386bb1d1fb1a8c991
+10. 0x507e52ef684ca2dd91f90a9d26d149dd3288beae
+```
+
+### ⚡ Top Semanales:
+
+```
+11. 0x96489abcb9f583d6835c8ef95ffc923d05a86825
+12. 0x92672c80d36dcd08172aa1e51dface0f20b70f9a
+```
+
+**Todas verificadas con P&L positivo** - No hay perdedores en la lista.
+
+---
+
+## 📊 Roadmap
+
+### ✅ Fase 1: Monitoreo (Completada)
+
+- [x] Identificar 12 ballenas rentables
+- [x] Database SQLite con SQLAlchemy
+- [x] Monitor individual con polling
+- [x] Scripts de ejecución
+
+### 🔄 Fase 2: Copy Trading (En Progreso)
+
+- [ ] Implementar detección de trades en tiempo real
+- [ ] Filtros de riesgo avanzados
+- [ ] Cálculo de position sizing
+- [ ] Paper Trading mode
+- [ ] Integración con CLOB API
+
+### 🎯 Fase 3: Producción
+
+- [ ] Testing en Paper Trading (1-2 semanas)
+- [ ] Validar win rate >60%
+- [ ] Deploy con capital limitado ($500-1000)
+- [ ] Telegram notifications
+
+---
+
+## 🔧 Configuración (Fase 2)
+
+Solo necesario cuando implementemos copy trading:
+
+```bash
+cp .env.example .env
+nano .env
+```
+
+Variables requeridas:
+
+```bash
+POLYMARKET_API_KEY=tu_api_key
+POLYMARKET_API_SECRET=tu_api_secret
+POLYMARKET_API_PASSPHRASE=tu_passphrase
+PRIVATE_KEY=0xtu_private_key
+DRY_RUN=true  # Siempre empezar en Paper Trading
+```
+
+---
+
+## 📚 Documentación
+
+- [WHALE_WATCHING_README.md](WHALE_WATCHING_README.md) - Guía completa de uso
+- [Walkthrough](whale_watching_walkthrough.md) - Proceso de implementación
+- [Polymarket Docs](https://docs.polymarket.com) - Documentación oficial
+
+---
 
 ## 🔐 Seguridad
 
-### ⚠️ CRÍTICO - Protege tus credenciales:
+- ⚠️ **NUNCA** compartas tu `PRIVATE_KEY`
+- ⚠️ **NUNCA** subas `.env` a GitHub
+- ⚠️ Usa `.gitignore` (ya incluido)
+- 💡 Empieza siempre en Paper Trading (`DRY_RUN=true`)
 
-1. **NUNCA** compartas tu `PRIVATE_KEY`
-2. **NUNCA** subas `.env` a GitHub
-3. **NUNCA** pegues credenciales en chats públicos
-4. Usa `.gitignore` (ya incluido)
-5. Considera usar hardware wallet para producción
-
-### Proxy Wallets:
-
-Polymarket usa smart contract wallets (proxy) para cada usuario:
-
-- Tu EOA (Phantom): Firma transacciones
-- Proxy Wallet: Ejecuta trades
-- Ambas controladas por tu private key
-- Las direcciones son diferentes (esto es **normal**)
-
-## 📈 Configuración de Riesgo
-
-En `.env`, ajusta estos parámetros:
-
-```bash
-# Máximo % del balance por trade
-MAX_POSITION_SIZE_PERCENT=0.15  # 15%
-
-# Stop-loss diario (detiene bot si se alcanza)
-DAILY_STOP_LOSS_PERCENT=0.10    # 10%
-
-# Ganancia mínima para ejecutar
-MIN_PROFIT_PERCENT=0.02         # 2%
-```
-
-## 📊 Monitoreo
-
-### Ver logs en tiempo real:
-
-```bash
-tail -f logs/polymarket_bot.log
-```
-
-### Reportes diarios:
-
-Los reportes se guardan en `data/daily_reports/`
-
-## 🐛 Troubleshooting
-
-### Error: "Invalid API credentials"
-
-- Verifica que copiaste correctamente las 3 credenciales de Polymarket
-- Revisa que no haya espacios extras en `.env`
-
-### Error: "Insufficient balance"
-
-- Verifica que tienes USDC en tu proxy wallet de Polymarket
-- Deposita desde Phantom si es necesario
-
-### Error: "Rate limit exceeded"
-
-- El bot tiene throttling automático
-- Si persiste, reduce `MARKET_REFRESH_INTERVAL` en `.env`
-
-### Direcciones no coinciden:
-
-- ✅ Esto es normal - Polymarket usa proxy wallets
-- Lee `proxy_wallet_solution.md` en la documentación
-
-## 📚 Documentación Adicional
-
-- [Polymarket Official Docs](https://docs.polymarket.com)
-- [py-clob-client GitHub](https://github.com/Polymarket/py-clob-client)
-- [Polygon Network](https://polygon.technology)
+---
 
 ## ⚖️ Legal & Disclaimer
 
 **USO BAJO TU PROPIO RIESGO**
 
-Este bot es para fines educativos y de investigación. El trading de arbitraje conlleva riesgos:
+Este bot es para fines educativos y de investigación. El copy trading conlleva riesgos:
 
 - Pérdida de capital
-- Slippage
-- Cambios de mercado
+- Las ballenas también pierden trades
+- Cambios de mercado imprevistos
 - Bugs en el código
 
 **NO** somos responsables por pérdidas financieras.
 
-## 📝 Logs & Reportes
-
-El bot genera:
-
-- `logs/polymarket_bot.log` - Log general
-- `data/trades.csv` - Historial de trades
-- `data/opportunities.json` - Oportunidades detectadas
-- `data/daily_reports/` - Reportes diarios de P&L
-
-## 🚀 Roadmap
-
-### Estrategia de Arbitraje:
-
-- [x] Scanner de mercados (Gamma API)
-- [x] Detector de arbitraje intra-mercado
-- [ ] Detector de arbitraje inter-mercado
-- [x] Risk management básico
-- [ ] WebSocket integration
-- [ ] Order batching
-
-### Estrategia de Whale Watching: 🐋
-
-- [x] Identificación de ballenas rentables (12 verificadas)
-- [x] Database de tracking (SQLite + SQLAlchemy)
-- [x] Monitor individual con polling
-- [ ] **NEXT**: Implementar copy trading logic
-- [ ] **NEXT**: Risk filters avanzados
-- [ ] **NEXT**: Paper trading mode
-- [ ] **NEXT**: Position sizing inteligente
-
-### General:
-
-- [ ] Telegram notifications
-- [ ] Dashboard web (opcional)
+---
 
 ## 📧 Soporte
 
-Para preguntas o issues, consulta la documentación en `/docs/` o crea un issue en GitHub.
+Para preguntas o issues, crea un issue en GitHub o consulta la documentación.
 
 ---
 
-**Desarrollado con ❤️ para la comunidad de Polymarket**
+**Desarrollado con ❤️ para copiar a los mejores traders de Polymarket** 🐋
