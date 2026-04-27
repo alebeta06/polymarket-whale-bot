@@ -29,6 +29,12 @@ class Settings(BaseSettings):
     daily_stop_loss_percent: float = Field(default=0.10, env="DAILY_STOP_LOSS_PERCENT")
     min_profit_percent: float = Field(default=0.02, env="MIN_PROFIT_PERCENT")
     polymarket_fee_percent: float = Field(default=0.02, env="POLYMARKET_FEE_PERCENT")
+
+    # Whale-trade gating + paper trading
+    min_whale_trade_usd: float = Field(default=500.0, env="MIN_WHALE_TRADE_USD")
+    max_whale_trade_age_seconds: float = Field(default=600.0, env="MAX_WHALE_TRADE_AGE_SECONDS")
+    paper_starting_balance_usd: float = Field(default=1000.0, env="PAPER_STARTING_BALANCE_USD")
+    max_per_copy_trade_usd: float = Field(default=200.0, env="MAX_PER_COPY_TRADE_USD")
     
     # Market Scanner
     min_market_volume: float = Field(default=10000, env="MIN_MARKET_VOLUME")
@@ -54,6 +60,8 @@ class Settings(BaseSettings):
     # Advanced
     rate_limit_buffer: float = Field(default=0.8, env="RATE_LIMIT_BUFFER")
     use_relayer: bool = Field(default=False, env="USE_RELAYER")
+    relayer_api_key: str = Field(default="", env="RELAYER_API_KEY")
+    relayer_api_key_address: str = Field(default="", env="RELAYER_API_KEY_ADDRESS")
     order_batch_size: int = Field(default=5, env="ORDER_BATCH_SIZE")
     
     class Config:
