@@ -2,7 +2,9 @@
 Database module for Whale Watching
 Stores trader statistics and trades using SQLite
 """
-from sqlalchemy import create_engine, Column, Integer, Float, String, Boolean, DateTime, ForeignKey
+import os
+from sqlalchemy import create_engine, Column, Integer, Float, String, Boolean, DateTime, ForeignKey, text
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
@@ -15,7 +17,7 @@ Base = declarative_base()
 class ObservedTrader(Base):
     """Track statistics for observed traders"""
     __tablename__ = 'observed_traders'
-    
+
     address = Column(String, primary_key=True)
     total_volume = Column(Float, default=0.0)
     total_trades = Column(Integer, default=0)
@@ -27,6 +29,9 @@ class ObservedTrader(Base):
     is_following = Column(Boolean, default=False)
     first_seen = Column(DateTime, default=datetime.now)
     last_seen = Column(DateTime, default=datetime.now)
+    # Watermark of the newest trade timestamp (unix seconds) we have already
+    # processed for this whale. Survives restarts so we don't re-emit old trades.
+    last_seen_trade_ts = Column(Float, default=0.0)
     
     # Relationship to trades
     trades = relationship("ObservedTrade", back_populates="trader")
@@ -50,7 +55,7 @@ class ObservedTrader(Base):
 class ObservedTrade(Base):
     """Individual trades from observed traders"""
     __tablename__ = 'observed_trades'
-    
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     trader_address = Column(String, ForeignKey('observed_traders.address'))
     market_id = Column(String)
@@ -59,22 +64,95 @@ class ObservedTrade(Base):
     size = Column(Float)
     price = Column(Float)
     timestamp = Column(DateTime, default=datetime.now)
-    
+
     # Relationship
     trader = relationship("ObservedTrader", back_populates="trades")
 
 
+class PaperTrade(Base):
+    """Simulated copy trades while DRY_RUN=true.
+
+    Mirrors what we *would* have placed on the CLOB so we can compute paper P&L
+    without putting real capital at risk. Includes both the whale's original trade
+    and our copy parameters so reconciliation can compare slippage, fill price, etc.
+    """
+    __tablename__ = 'paper_trades'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    whale_address = Column(String, ForeignKey('observed_traders.address'))
+    market_id = Column(String)
+    outcome = Column(String)
+    side = Column(String)
+    # What we would have placed (USD notional, shares, fill price assumption).
+    copy_notional_usd = Column(Float)
+    copy_shares = Column(Float)
+    copy_price = Column(Float)
+    # The whale's original trade for reference / slippage analysis.
+    whale_size_shares = Column(Float)
+    whale_price = Column(Float)
+    whale_notional_usd = Column(Float)
+    # Lifecycle: open → resolved_win | resolved_loss | invalidated
+    status = Column(String, default="open")
+    realized_pnl_usd = Column(Float, default=0.0)
+    timestamp = Column(DateTime, default=datetime.now)
+    # Whale trade hash for traceability / dedup if we ever re-poll the same trade.
+    whale_tx_hash = Column(String, default="")
+
+
 class WhaleDatabase:
     """Database manager for whale tracking"""
-    
+
     def __init__(self, db_path: str = "data/whales.db"):
         """Initialize database connection"""
+        parent = os.path.dirname(db_path)
+        if parent:
+            os.makedirs(parent, exist_ok=True)
         self.engine = create_engine(f'sqlite:///{db_path}')
         Base.metadata.create_all(self.engine)
+        self._migrate_schema()
         Session = sessionmaker(bind=self.engine)
         self.session = Session()
         log.info(f"✅ Database initialized at {db_path}")
+
+    def _migrate_schema(self):
+        """Apply idempotent ALTER TABLE statements for columns added after first release.
+
+        SQLAlchemy's create_all only creates missing tables; it does not add new
+        columns to an existing table. SQLite ignores ADD COLUMN if the column
+        already exists only via try/except, so we swallow the duplicate-column
+        OperationalError.
+        """
+        migrations = [
+            "ALTER TABLE observed_traders ADD COLUMN last_seen_trade_ts REAL DEFAULT 0",
+        ]
+        with self.engine.begin() as conn:
+            for stmt in migrations:
+                try:
+                    conn.execute(text(stmt))
+                except OperationalError:
+                    # Column already exists — fine.
+                    pass
     
+    def ensure_trader(self, address: str) -> ObservedTrader:
+        """Insert the trader row if missing, without touching trade counters.
+
+        Use this from seed/loader code so each restart does not phantom-increment
+        total_trades. Use add_or_update_trader only when there is a real trade.
+        """
+        trader = self.session.query(ObservedTrader).filter_by(address=address).first()
+        if trader is None:
+            trader = ObservedTrader(
+                address=address,
+                total_volume=0.0,
+                total_trades=0,
+                largest_trade=0.0,
+                first_seen=datetime.now(),
+                last_seen=datetime.now(),
+            )
+            self.session.add(trader)
+            self.session.commit()
+        return trader
+
     def add_or_update_trader(self, address: str, trade_size: float, is_win: Optional[bool] = None) -> ObservedTrader:
         """
         Add new trader or update existing one
@@ -166,7 +244,82 @@ class WhaleDatabase:
     def get_trader_stats(self, address: str) -> Optional[ObservedTrader]:
         """Get stats for a specific trader"""
         return self.session.query(ObservedTrader).filter_by(address=address).first()
-    
+
+    def get_last_seen_trade_ts(self, address: str) -> Optional[float]:
+        """Return the persisted trade-timestamp watermark for a whale, or None if unset."""
+        trader = self.session.query(ObservedTrader).filter_by(address=address).first()
+        if trader is None:
+            return None
+        ts = trader.last_seen_trade_ts or 0.0
+        return ts if ts > 0 else None
+
+    def set_last_seen_trade_ts(self, address: str, ts: float) -> None:
+        """Persist the trade-timestamp watermark, monotonically (never moves backward)."""
+        trader = self.session.query(ObservedTrader).filter_by(address=address).first()
+        if trader is None:
+            return
+        current = trader.last_seen_trade_ts or 0.0
+        if ts > current:
+            trader.last_seen_trade_ts = ts
+            self.session.commit()
+
+    def record_paper_trade(
+        self,
+        *,
+        whale_address: str,
+        market_id: str,
+        outcome: str,
+        side: str,
+        copy_notional_usd: float,
+        copy_shares: float,
+        copy_price: float,
+        whale_size_shares: float,
+        whale_price: float,
+        whale_notional_usd: float,
+        whale_tx_hash: str = "",
+    ) -> PaperTrade:
+        """Persist a simulated copy trade (DRY_RUN mode). Returns the row."""
+        pt = PaperTrade(
+            whale_address=whale_address,
+            market_id=market_id,
+            outcome=outcome,
+            side=side,
+            copy_notional_usd=copy_notional_usd,
+            copy_shares=copy_shares,
+            copy_price=copy_price,
+            whale_size_shares=whale_size_shares,
+            whale_price=whale_price,
+            whale_notional_usd=whale_notional_usd,
+            whale_tx_hash=whale_tx_hash,
+            status="open",
+            realized_pnl_usd=0.0,
+            timestamp=datetime.now(),
+        )
+        self.session.add(pt)
+        self.session.commit()
+        return pt
+
+    def get_paper_committed_usd(self) -> float:
+        """Sum of notional locked in still-open paper trades."""
+        from sqlalchemy import func
+        total = (
+            self.session.query(func.coalesce(func.sum(PaperTrade.copy_notional_usd), 0.0))
+            .filter(PaperTrade.status == "open")
+            .scalar()
+        )
+        return float(total or 0.0)
+
+    def has_paper_trade_for(self, whale_tx_hash: str) -> bool:
+        """Idempotency guard: avoid recording the same whale trade twice if a poll cycle re-emits it."""
+        if not whale_tx_hash:
+            return False
+        return (
+            self.session.query(PaperTrade.id)
+            .filter(PaperTrade.whale_tx_hash == whale_tx_hash)
+            .first()
+            is not None
+        )
+
     def close(self):
         """Close database connection"""
         self.session.close()
