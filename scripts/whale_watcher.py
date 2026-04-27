@@ -7,22 +7,38 @@ import asyncio
 import signal
 from loguru import logger as log
 
+from src.config import get_settings
 from src.whale_watching.database import WhaleDatabase
 from src.whale_watching.individual_monitor import IndividualWhaleMonitor
+from src.whale_watching.risk import RiskLimits
 
 
 class WhaleWatchingBot:
     """Main bot controller"""
-    
+
     def __init__(self, poll_interval: int = 60):
         """
         Initialize the Whale Watching bot
-        
+
         Args:
             poll_interval: Seconds between checks for whale trades
         """
+        s = get_settings()
         self.db = WhaleDatabase("data/whales.db")
-        self.monitor = IndividualWhaleMonitor(self.db, poll_interval=poll_interval)
+        self.monitor = IndividualWhaleMonitor(
+            self.db,
+            poll_interval=poll_interval,
+            dry_run=s.dry_run,
+            copy_pct=s.max_position_size_percent,
+            paper_starting_balance_usd=s.paper_starting_balance_usd,
+            max_per_copy_trade_usd=s.max_per_copy_trade_usd,
+            risk_limits=RiskLimits(
+                min_whale_notional_usd=s.min_whale_trade_usd,
+                max_trade_age_seconds=s.max_whale_trade_age_seconds,
+                min_market_volume_usd=s.min_market_volume,
+                daily_stop_loss_pct=s.daily_stop_loss_percent,
+            ),
+        )
         self.running = False
     
     async def start(self):
