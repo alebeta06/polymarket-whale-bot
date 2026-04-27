@@ -81,26 +81,42 @@ class PolymarketDataAPI:
             log.error(f"Error fetching portfolio for {address}: {e}")
             return None
     
-    async def get_user_trades(self, address: str, limit: int = 100) -> List[Dict]:
+    async def get_user_trades(
+        self,
+        address: str,
+        limit: int = 100,
+        after_timestamp: Optional[float] = None,
+    ) -> List[Dict]:
         """
-        Get recent trades for a specific user
-        
+        Get recent trades for a specific user.
+
+        Endpoint: GET https://data-api.polymarket.com/trades?user=<address>&limit=N
+        Each trade dict contains: proxyWallet, side, asset, conditionId, size, price,
+        timestamp (unix seconds), title, slug, outcome, outcomeIndex, transactionHash, ...
+
         Args:
-            address: Wallet address
-            limit: Number of trades to fetch
-        
+            address: Wallet address (lowercase 0x-prefixed)
+            limit: Max number of trades to fetch from the API
+            after_timestamp: If set, only trades with timestamp strictly greater than this
+                are returned (client-side filter; the public endpoint has no `since` param).
+
         Returns:
-            List of trade dictionaries
+            List of trade dictionaries, newest first.
         """
         await self._ensure_session()
-        
-        url = f"{self.BASE_URL}/users/{address}/trades"
-        params = {"limit": limit}
-        
+
+        url = f"{self.BASE_URL}/trades"
+        params = {"user": address, "limit": limit}
+
         try:
             async with self.session.get(url, params=params) as response:
                 if response.status == 200:
                     data = await response.json()
+                    if not isinstance(data, list):
+                        log.warning(f"Unexpected trades payload type for {address[:10]}...: {type(data).__name__}")
+                        return []
+                    if after_timestamp is not None:
+                        data = [t for t in data if float(t.get("timestamp", 0)) > after_timestamp]
                     return data
                 else:
                     log.warning(f"Trades API error for {address}: {response.status}")
