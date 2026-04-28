@@ -1,161 +1,151 @@
+#!/usr/bin/env python
+"""Refresh the whale seed list from Polymarket's live profit leaderboard.
+
+Strategy: pull top-N from "30d" and "all" windows. The intersection — whales
+profitable both this month AND historically — are the strongest candidates.
+Print a ready-to-paste SEED_WHALES Python literal; the user reviews and commits.
+
+We deliberately do NOT overwrite seed_whales.py automatically: per CLAUDE.md the
+seed list is curated by the user, and a leaderboard snapshot is one input, not
+the source of truth.
+
+Usage:
+    PYTHONPATH=. python scripts/scrape_leaderboard.py [--top N]
 """
-Leaderboard Scraper - One-time script to extract top whale addresses
-from Polymarket's public leaderboard
-"""
-import requests
-from bs4 import BeautifulSoup
-import json
+import argparse
+import asyncio
+from datetime import datetime
+from typing import Dict, List, Tuple
+
 from loguru import logger as log
-from typing import List, Dict
+
+from src.whale_watching.data_api import PolymarketDataAPI
 
 
-def scrape_leaderboard() -> List[Dict]:
+def merge_windows(
+    monthly: List[Dict],
+    historic: List[Dict],
+    *,
+    top_n: int,
+) -> Tuple[List[Dict], List[Dict], List[Dict]]:
+    """Return (consistent, monthly_only, historic_only), each sorted by PnL desc.
+
+    "consistent" = whales that appear in BOTH the 30d and all-time top-N AND have
+    positive PnL in both. These are the strongest candidates to copy.
     """
-    Scrape Polymarket leaderboard for top trader addresses
-    
-    Returns:
-        List of dictionaries with trader info (address, volume, pnl, etc.)
-    """
-    url = "https://polymarket.com/leaderboard"
-    
+    def by_addr(rows: List[Dict]) -> Dict[str, Dict]:
+        return {r["proxyWallet"].lower(): r for r in rows if r.get("proxyWallet")}
+
+    m_map = by_addr(monthly)
+    h_map = by_addr(historic)
+
+    consistent: List[Dict] = []
+    for addr, m_row in m_map.items():
+        h_row = h_map.get(addr)
+        if h_row is None:
+            continue
+        if (m_row.get("amount") or 0) <= 0 or (h_row.get("amount") or 0) <= 0:
+            continue
+        consistent.append(
+            {
+                "proxyWallet": addr,
+                "name": m_row.get("name") or m_row.get("pseudonym") or "anon",
+                "pnl_30d": m_row["amount"],
+                "pnl_all": h_row["amount"],
+            }
+        )
+    consistent.sort(key=lambda r: r["pnl_30d"], reverse=True)
+
+    monthly_only = [
+        {**r, "address": r["proxyWallet"].lower()}
+        for r in monthly
+        if r["proxyWallet"].lower() not in {c["proxyWallet"] for c in consistent}
+        and (r.get("amount") or 0) > 0
+    ][:top_n]
+
+    historic_only = [
+        {**r, "address": r["proxyWallet"].lower()}
+        for r in historic
+        if r["proxyWallet"].lower() not in {c["proxyWallet"] for c in consistent}
+        and (r.get("amount") or 0) > 0
+    ][:top_n]
+
+    return consistent[:top_n], monthly_only, historic_only
+
+
+def render_seed(consistent: List[Dict]) -> str:
+    """Render a SEED_WHALES Python literal from the consistent winners."""
+    today = datetime.now().date().isoformat()
+    lines = [
+        "# Manual Whale Seed List - REGENERATED from leaderboard",
+        f"# Last updated: {today}",
+        "# Source: lb-api.polymarket.com /profit (intersection of 30d ∩ all-time, PnL > 0)",
+        "",
+        "SEED_WHALES = [",
+        "    # Format: (address, nickname, reason)",
+        "",
+    ]
+    for i, w in enumerate(consistent, 1):
+        nickname = (w["name"] or "anon").replace('"', "'")[:32] or f"Whale#{i}"
+        reason = f"30d ${w['pnl_30d']:,.0f} | all-time ${w['pnl_all']:,.0f}"
+        lines.append(f'    ("{w["proxyWallet"]}", "{nickname}", "{reason}"),')
+    lines.append("]")
+    return "\n".join(lines) + "\n"
+
+
+async def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--top", type=int, default=15, help="Top N per window (default 15)")
+    ap.add_argument(
+        "--apply",
+        action="store_true",
+        help="Overwrite src/whale_watching/seed_whales.py with the suggestion. "
+        "Default: just print, let the user review and paste.",
+    )
+    args = ap.parse_args()
+
+    api = PolymarketDataAPI()
     try:
-        # Make request
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36'
-        }
-        response = requests.get(url, headers=headers, timeout=10)
-        
-        if response.status_code != 200:
-            log.error(f"Failed to fetch leaderboard: HTTP {response.status_code}")
-            return []
-        
-        # Try to find JSON data in page (Polymarket likely uses Next.js with data in script tags)
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # Look for Next.js data
-        scripts = soup.find_all('script', {'id': '__NEXT_DATA__'})
-        
-        if scripts:
-            try:
-                data = json.loads(scripts[0].string)
-                log.info("Found Next.js data in page")
-                
-                # Navigate the JSON to find leaderboard data
-                # This structure may vary, needs inspection
-                props = data.get('props', {})
-                page_props = props.get('pageProps', {})
-                
-                # Look for leaderboard array
-                leaderboard = (
-                    page_props.get('leaderboard') or
-                    page_props.get('traders') or
-                    page_props.get('users') or
-                    []
-                )
-                
-                if leaderboard:
-                    log.info(f"✅ Found {len(leaderboard)} traders in leaderboard")
-                    return leaderboard
-                else:
-                    log.warning("Leaderboard data not found in expected location")
-                    # Save the JSON for manual inspection
-                    with open('debug_leaderboard.json', 'w') as f:
-                        json.dump(page_props, f, indent=2)
-                    log.info("Saved page data to debug_leaderboard.json for inspection")
-                    
-            except json.JSONDecodeError as e:
-                log.error(f"Failed to parse JSON: {e}")
-        
-        # Fallback: try to parse HTML directly
-        log.info("Attempting HTML parsing...")
-        traders = []
-        
-        # Look for addresses in the HTML (they typically start with 0x)
-        import re
-        addresses = re.findall(r'0x[a-fA-F0-9]{40}', response.text)
-        
-        if addresses:
-            # Remove duplicates
-            unique_addresses = list(set(addresses))
-            log.info(f"Found {len(unique_addresses)} unique addresses in HTML")
-            
-            traders = [{'address': addr} for addr in unique_addresses[:20]]
-            return traders
-        
-        return []
-        
-    except Exception as e:
-        log.error(f"Error scraping leaderboard: {e}")
-        return []
+        log.info("Fetching leaderboards...")
+        monthly = await api.get_leaderboard(window="30d", limit=args.top * 3)
+        historic = await api.get_leaderboard(window="all", limit=args.top * 3)
+    finally:
+        await api.close()
 
-
-def save_to_seed_file(traders: List[Dict], output_file: str = "src/whale_watching/seed_whales.py"):
-    """
-    Save extracted traders to seed_whales.py file
-    
-    Args:
-        traders: List of trader dictionaries
-        output_file: Path to output file
-    """
-    if not traders:
-        log.warning("No traders to save")
+    if not monthly or not historic:
+        log.error("Could not fetch leaderboards — abort")
         return
-    
-    # Generate Python code for seed list
-    code = "# Manual Whale Seed List (Auto-generated from leaderboard)\n"
-    code += "# Generated: " + str(__import__('datetime').datetime.now()) + "\n\n"
-    code += "SEED_WHALES = [\n"
-    code += "    # Format: (address, nickname, reason)\n\n"
-    
-    for i, trader in enumerate(traders[:20], 1):  # Top 20
-        address = trader.get('address') or trader.get('walletAddress') or trader.get('user')
-        if address:
-            pnl = trader.get('pnl', 'unknown')
-            volume = trader.get('volume', 'unknown')
-            nickname = f"Leaderboard#{i}"
-            reason = f"PnL: ${pnl}, Volume: ${volume}" if pnl != 'unknown' else "Top trader"
-            
-            code += f'    ("{address}", "{nickname}", "{reason}"),\n'
-    
-    code += "]\n"
-    
-    # Write to file
-    with open(output_file, 'w') as f:
-        f.write(code)
-    
-    log.info(f"✅ Saved {len(traders[:20])} whales to {output_file}")
 
+    consistent, m_only, h_only = merge_windows(monthly, historic, top_n=args.top)
 
-def main():
-    log.info("🔍 Scraping Polymarket Leaderboard...")
-    log.info("=" * 60)
-    
-    traders = scrape_leaderboard()
-    
-    if traders:
-        log.info(f"\n📊 Found {len(traders)} traders")
-        
-        # Show first 5
-        log.info("\nTop 5 Traders:")
-        for i, trader in enumerate(traders[:5], 1):
-            address = trader.get('address') or trader.get('walletAddress', 'N/A')
-            log.info(f"  {i}. {address}")
-        
-        # Save to seed file
-        save_to_seed_file(traders)
-        
-        log.info("\n✅ Scraping complete!")
-        log.info("Next step: Update trade_monitor.py to use these addresses")
-    else:
-        log.error("\n❌ Failed to extract traders")
-        log.info("Manual action required:")
-        log.info("1. Visit https://polymarket.com/leaderboard in your browser")
-        log.info("2. Open DevTools (F12) -> Network tab")
-        log.info("3. Look for API calls that load leaderboard data")
-        log.info("4. Copy the addresses manually")
-    
-    log.info("=" * 60)
+    log.info("=" * 70)
+    log.info(f"📊 LEADERBOARD SNAPSHOT @ {datetime.now():%Y-%m-%d %H:%M}")
+    log.info("=" * 70)
+
+    log.info(f"\n✅ Consistent winners (in BOTH 30d & all-time, PnL > 0): {len(consistent)}")
+    for i, w in enumerate(consistent, 1):
+        log.info(
+            f"  {i:2}. {w['proxyWallet'][:12]}... {w['name']:<24} "
+            f"30d=${w['pnl_30d']:>+12,.0f}  all=${w['pnl_all']:>+12,.0f}"
+        )
+
+    log.info(f"\n🆕 Hot this month only (top {min(5, len(m_only))} for context):")
+    for w in m_only[:5]:
+        log.info(f"   {w['address'][:12]}... {(w.get('name') or 'anon'):<24} 30d=${w['amount']:>+12,.0f}")
+
+    rendered = render_seed(consistent)
+
+    log.info("\n" + "=" * 70)
+    log.info("📋 Suggested seed_whales.py (review before committing):")
+    log.info("=" * 70 + "\n")
+    print(rendered)
+
+    if args.apply:
+        target = "src/whale_watching/seed_whales.py"
+        with open(target, "w") as f:
+            f.write(rendered)
+        log.info(f"✅ Wrote {target} ({len(consistent)} whales). Review with `git diff`.")
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
