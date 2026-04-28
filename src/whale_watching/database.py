@@ -5,8 +5,7 @@ Stores trader statistics and trades using SQLite
 import os
 from sqlalchemy import create_engine, Column, Integer, Float, String, Boolean, DateTime, ForeignKey, text
 from sqlalchemy.exc import OperationalError
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 from datetime import datetime
 from typing import List, Optional
 from loguru import logger as log
@@ -94,7 +93,14 @@ class PaperTrade(Base):
     # Lifecycle: open → resolved_win | resolved_loss | invalidated
     status = Column(String, default="open")
     realized_pnl_usd = Column(Float, default=0.0)
+    # Mark-to-market for still-open positions; refreshed by reconcile.py.
+    unrealized_pnl_usd = Column(Float, default=0.0)
+    # CLOB token id for the outcome we bought — useful for direct CLOB queries
+    # and to disambiguate when a market has more than two outcomes.
+    asset_id = Column(String, default="")
     timestamp = Column(DateTime, default=datetime.now)
+    # When reconcile.py last updated this row.
+    last_reconciled_at = Column(DateTime, default=None)
     # Whale trade hash for traceability / dedup if we ever re-poll the same trade.
     whale_tx_hash = Column(String, default="")
 
@@ -124,6 +130,9 @@ class WhaleDatabase:
         """
         migrations = [
             "ALTER TABLE observed_traders ADD COLUMN last_seen_trade_ts REAL DEFAULT 0",
+            "ALTER TABLE paper_trades ADD COLUMN unrealized_pnl_usd REAL DEFAULT 0",
+            "ALTER TABLE paper_trades ADD COLUMN asset_id TEXT DEFAULT ''",
+            "ALTER TABLE paper_trades ADD COLUMN last_reconciled_at DATETIME",
         ]
         with self.engine.begin() as conn:
             for stmt in migrations:
@@ -277,6 +286,7 @@ class WhaleDatabase:
         whale_price: float,
         whale_notional_usd: float,
         whale_tx_hash: str = "",
+        asset_id: str = "",
     ) -> PaperTrade:
         """Persist a simulated copy trade (DRY_RUN mode). Returns the row."""
         pt = PaperTrade(
@@ -291,13 +301,23 @@ class WhaleDatabase:
             whale_price=whale_price,
             whale_notional_usd=whale_notional_usd,
             whale_tx_hash=whale_tx_hash,
+            asset_id=asset_id,
             status="open",
             realized_pnl_usd=0.0,
+            unrealized_pnl_usd=0.0,
             timestamp=datetime.now(),
         )
         self.session.add(pt)
         self.session.commit()
         return pt
+
+    def get_open_paper_trades(self) -> List["PaperTrade"]:
+        """All paper trades whose lifecycle has not yet terminated."""
+        return (
+            self.session.query(PaperTrade)
+            .filter(PaperTrade.status == "open")
+            .all()
+        )
 
     def get_paper_committed_usd(self) -> float:
         """Sum of notional locked in still-open paper trades."""

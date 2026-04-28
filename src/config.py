@@ -35,6 +35,8 @@ class Settings(BaseSettings):
     max_whale_trade_age_seconds: float = Field(default=600.0, env="MAX_WHALE_TRADE_AGE_SECONDS")
     paper_starting_balance_usd: float = Field(default=1000.0, env="PAPER_STARTING_BALANCE_USD")
     max_per_copy_trade_usd: float = Field(default=200.0, env="MAX_PER_COPY_TRADE_USD")
+    # Run reconcile() every N completed poll cycles. 0 disables in-loop reconciling.
+    reconcile_every_n_polls: int = Field(default=10, env="RECONCILE_EVERY_N_POLLS")
     
     # Market Scanner
     min_market_volume: float = Field(default=10000, env="MIN_MARKET_VOLUME")
