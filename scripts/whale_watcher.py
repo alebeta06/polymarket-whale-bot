@@ -38,6 +38,7 @@ class WhaleWatchingBot:
                 min_market_volume_usd=s.min_market_volume,
                 daily_stop_loss_pct=s.daily_stop_loss_percent,
             ),
+            reconcile_every_n_polls=s.reconcile_every_n_polls,
         )
         self.running = False
     
