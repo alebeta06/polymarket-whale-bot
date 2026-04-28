@@ -9,47 +9,51 @@ from loguru import logger as log
 
 
 class PolymarketDataAPI:
-    """Client for Polymarket Data API"""
-    
+    """Client for Polymarket public APIs (data-api.* and lb-api.*)."""
+
     BASE_URL = "https://data-api.polymarket.com"
-    
+    LEADERBOARD_BASE_URL = "https://lb-api.polymarket.com"
+
     def __init__(self):
         self.session: Optional[aiohttp.ClientSession] = None
-    
+
     async def _ensure_session(self):
         """Ensure aiohttp session exists"""
         if self.session is None or self.session.closed:
             self.session = aiohttp.ClientSession()
-    
+
     async def close(self):
         """Close the HTTP session"""
         if self.session and not self.session.closed:
             await self.session.close()
-    
-    async def get_leaderboard(self, period: str = "all", limit: int = 100) -> List[Dict]:
-        """
-        Fetch leaderboard of top traders
-        
+
+    async def get_leaderboard(self, window: str = "all", limit: int = 100) -> List[Dict]:
+        """Fetch top traders by realized profit.
+
+        Endpoint: GET https://lb-api.polymarket.com/profit?window=<W>&limit=N
+        Each row: {proxyWallet, amount (PnL in USD), pseudonym, name, ...}
+
         Args:
-            period: Time period ('all', '30d', '7d', '24h')
-            limit: Number of results (max 100)
-        
-        Returns:
-            List of user dictionaries with address, pnl, volume, etc.
+            window: 'all', '30d' (~month), or '1d' (~day). Other values 400.
+            limit: Max number of rows.
         """
         await self._ensure_session()
-        
-        url = f"{self.BASE_URL}/leaderboard"
-        params = {"period": period, "limit": limit}
-        
+
+        url = f"{self.LEADERBOARD_BASE_URL}/profit"
+        params = {"window": window, "limit": limit}
+
         try:
             async with self.session.get(url, params=params) as response:
                 if response.status == 200:
                     data = await response.json()
-                    log.info(f"Fetched {len(data)} users from leaderboard")
+                    if not isinstance(data, list):
+                        log.warning(f"Leaderboard payload not a list: {type(data).__name__}")
+                        return []
+                    log.info(f"Fetched {len(data)} users from leaderboard (window={window})")
                     return data
                 else:
-                    log.error(f"Leaderboard API error: {response.status}")
+                    body = (await response.text())[:200]
+                    log.error(f"Leaderboard API error {response.status}: {body}")
                     return []
         except Exception as e:
             log.error(f"Error fetching leaderboard: {e}")

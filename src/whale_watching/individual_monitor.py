@@ -11,6 +11,8 @@ from datetime import datetime, timedelta
 from .database import WhaleDatabase
 from .seed_whales import SEED_WHALES
 from .data_api import PolymarketDataAPI
+from .markets import MarketsAPI
+from .reconcile import reconcile
 from .risk import RiskContext, RiskLimits, evaluate as evaluate_risk
 from .sizing import compute_copy_size
 from py_clob_client.client import ClobClient
@@ -35,6 +37,7 @@ class IndividualWhaleMonitor:
         paper_starting_balance_usd: float = 1000.0,
         max_per_copy_trade_usd: float = 200.0,
         risk_limits: Optional[RiskLimits] = None,
+        reconcile_every_n_polls: int = 10,
     ):
         """
         Initialize the monitor
@@ -56,10 +59,13 @@ class IndividualWhaleMonitor:
         self.paper_starting_balance_usd = paper_starting_balance_usd
         self.max_per_copy_trade_usd = max_per_copy_trade_usd
         self.risk_limits = risk_limits or RiskLimits()
+        self.reconcile_every_n_polls = reconcile_every_n_polls
         self.whale_addresses: List[str] = []
         self.client: Optional[ClobClient] = None
         self.data_api: Optional[PolymarketDataAPI] = None
+        self.markets_api: Optional[MarketsAPI] = None
         self.running = False
+        self._poll_count: int = 0
         # Watermark per whale: only trades with timestamp > watermark are processed.
         # Stored as unix seconds (float) to match the Data API's `timestamp` field.
         self.last_trade_timestamps: Dict[str, float] = {}
@@ -75,6 +81,10 @@ class IndividualWhaleMonitor:
         # Public Data API client (read-only, no auth) — primary source of trades.
         self.data_api = PolymarketDataAPI()
         log.info("✅ Polymarket Data API client initialized")
+
+        # Gamma markets client — used by in-loop reconciliation.
+        self.markets_api = MarketsAPI()
+        log.info("✅ Polymarket Markets API client initialized")
 
         # CLOB client kept for Fase 2 (order placement); not used for read-only polling.
         try:
@@ -168,7 +178,8 @@ class IndividualWhaleMonitor:
         conditionId, size, price, timestamp, outcome, outcomeIndex, transactionHash.
         """
         try:
-            market_id = trade.get("conditionId") or trade.get("asset") or "UNKNOWN"
+            market_id = trade.get("conditionId") or "UNKNOWN"
+            asset_id = str(trade.get("asset") or "")
             outcome = self._normalize_outcome(trade.get("outcome"))
             side = (trade.get("side") or "BUY").upper()
             whale_shares = float(trade.get("size", 0) or 0)
@@ -193,6 +204,12 @@ class IndividualWhaleMonitor:
                 size=whale_notional,
                 price=whale_price,
             )
+
+            # SELL trades close existing positions and need cost-basis tracking
+            # to compute P&L cleanly — out of scope for v1 paper trading.
+            if side != "BUY":
+                log.debug(f"⏭️  Skip non-BUY trade: {side} {outcome} on {str(market_id)[:12]}...")
+                return
 
             # 1) Risk gate.
             risk_decision = evaluate_risk(
@@ -253,6 +270,7 @@ class IndividualWhaleMonitor:
                     whale_price=whale_price,
                     whale_notional_usd=whale_notional,
                     whale_tx_hash=tx_hash,
+                    asset_id=asset_id,
                 )
                 log.info(
                     f"📝 Paper copy: {side} {outcome} "
@@ -285,6 +303,25 @@ class IndividualWhaleMonitor:
                         await self.check_whale_trades(address)
                         await asyncio.sleep(1)  # Rate limit between whales
 
+                    self._poll_count += 1
+
+                    # Periodic reconcile so paper P&L stays fresh without a separate cron.
+                    if (
+                        self.reconcile_every_n_polls > 0
+                        and self.markets_api is not None
+                        and self._poll_count % self.reconcile_every_n_polls == 0
+                    ):
+                        try:
+                            stats = await reconcile(self.db, self.markets_api)
+                            log.info(
+                                f"📊 Reconcile: {stats.still_open} open, "
+                                f"{stats.resolved_win}W/{stats.resolved_loss}L, "
+                                f"realized ${stats.realized_pnl_usd:+,.2f} "
+                                f"unrealized ${stats.unrealized_pnl_usd:+,.2f}"
+                            )
+                        except Exception as e:
+                            log.error(f"Reconcile failed (non-fatal): {e}")
+
                     # Wait for next poll cycle
                     log.info(f"⏳ Checked {len(self.whale_addresses)} whales, waiting {self.poll_interval}s...")
                     await asyncio.sleep(self.poll_interval)
@@ -296,6 +333,9 @@ class IndividualWhaleMonitor:
             if self.data_api is not None:
                 await self.data_api.close()
                 log.info("✅ Data API session closed")
+            if self.markets_api is not None:
+                await self.markets_api.close()
+                log.info("✅ Markets API session closed")
     
     async def start(self):
         """Start the monitor"""
