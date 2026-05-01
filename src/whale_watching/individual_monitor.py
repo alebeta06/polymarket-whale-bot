@@ -9,7 +9,7 @@ from loguru import logger as log
 from datetime import datetime, timedelta
 
 from .database import WhaleDatabase
-from .seed_whales import SEED_WHALES
+from .seed_whales import SEED_WHALES, EXCLUDED_WHALES
 from .data_api import PolymarketDataAPI
 from .markets import MarketsAPI
 from .reconcile import reconcile
@@ -94,9 +94,23 @@ class IndividualWhaleMonitor:
             log.warning(f"CLOB client init failed (non-fatal, only needed in Fase 2): {e}")
     
     def load_whales(self):
-        """Load whale addresses from seed list and hydrate watermarks from DB."""
+        """Load whale addresses from seed list and hydrate watermarks from DB.
+
+        Whales in EXCLUDED_WHALES are skipped (no follow, no polling). The trader
+        row is left untouched so any historical observed_trades survive.
+        """
         for address, nickname, reason in SEED_WHALES:
             address_lower = address.lower()
+
+            if address_lower in EXCLUDED_WHALES:
+                log.info(
+                    f"⏭️  Excluded {nickname} ({address_lower[:10]}...): "
+                    f"{EXCLUDED_WHALES[address_lower]}"
+                )
+                # Make sure we are NOT following them, in case a prior run did.
+                self.db.set_following(address_lower, False)
+                continue
+
             if address_lower not in self.whale_addresses:
                 self.whale_addresses.append(address_lower)
 
