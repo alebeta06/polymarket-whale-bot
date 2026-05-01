@@ -25,7 +25,7 @@ from typing import Dict, List, Optional, Tuple
 from src.whale_watching.data_api import PolymarketDataAPI
 from src.whale_watching.markets import MarketsAPI
 from src.whale_watching.reconcile import reconcile_one
-from src.whale_watching.seed_whales import SEED_WHALES
+from src.whale_watching.seed_whales import SEED_WHALES, EXCLUDED_WHALES
 from src.whale_watching.sizing import compute_copy_size
 
 
@@ -34,14 +34,6 @@ STARTING_BALANCE_USD = 1000.0
 COPY_PCT = 0.15
 MAX_PER_TRADE_USD = STARTING_BALANCE_USD * 0.05  # $50 cap → "5% of own capital"
 TRADES_LIMIT = 1000
-
-# Whales excluded from the post-filter run because their first-pass ROI was
-# negative. Kept here (not removed from SEED_WHALES) so we can still see them
-# in the unfiltered run if we want to re-evaluate later.
-EXCLUDED_WHALES = {
-    "0x507e52ef684ca2dd91f90a9d26d149dd3288beae",  # GamblingIsAllYouNeed: -5.5% ROI
-    "0xee613b3fc183ee44f9da9c05f53e2da107e3debf",  # sovereign2013:        -7.6% ROI
-}
 
 # Slippage levels (decimal) to test. 0 = optimistic baseline.
 # Buying at price p with slippage s means we actually paid p*(1+s).
