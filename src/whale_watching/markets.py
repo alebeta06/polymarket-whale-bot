@@ -35,6 +35,10 @@ class MarketsAPI:
 
         Returns a {condition_id: market_dict} mapping. Missing ids simply do not
         appear in the result (no exception).
+
+        Gamma's /markets endpoint hides closed markets by default. We query
+        twice (open then closed) and merge so reconciliation can find both
+        still-trading and already-resolved markets.
         """
         await self._ensure_session()
 
@@ -43,26 +47,32 @@ class MarketsAPI:
         uniq = [c for c in condition_ids if c and not (c in seen or seen.add(c))]
 
         result: Dict[str, dict] = {}
-        for i in range(0, len(uniq), self.BATCH_SIZE):
-            batch = uniq[i : i + self.BATCH_SIZE]
-            try:
-                async with self.session.get(
-                    f"{self.BASE_URL}/markets",
-                    params=[("condition_ids", c) for c in batch],
-                ) as r:
-                    if r.status != 200:
-                        log.warning(f"Gamma /markets HTTP {r.status} for batch of {len(batch)}")
-                        continue
-                    data = await r.json()
-                    if not isinstance(data, list):
-                        log.warning(f"Gamma /markets unexpected payload: {type(data).__name__}")
-                        continue
-                    for m in data:
-                        cid = m.get("conditionId")
-                        if cid:
-                            result[cid] = m
-            except Exception as e:
-                log.error(f"Gamma /markets error for batch starting {batch[0][:10]}...: {e}")
+        # First pass: default (open) markets. Second pass: closed=true.
+        for closed_flag in (None, "true"):
+            for i in range(0, len(uniq), self.BATCH_SIZE):
+                batch = uniq[i : i + self.BATCH_SIZE]
+                params: List[tuple] = [("condition_ids", c) for c in batch]
+                if closed_flag:
+                    params.append(("closed", closed_flag))
+                try:
+                    async with self.session.get(
+                        f"{self.BASE_URL}/markets",
+                        params=params,
+                    ) as r:
+                        if r.status != 200:
+                            log.warning(f"Gamma /markets HTTP {r.status} for batch of {len(batch)}")
+                            continue
+                        data = await r.json()
+                        if not isinstance(data, list):
+                            log.warning(f"Gamma /markets unexpected payload: {type(data).__name__}")
+                            continue
+                        for m in data:
+                            cid = m.get("conditionId")
+                            # Don't overwrite open-pass hits (they have fresher bestBid).
+                            if cid and cid not in result:
+                                result[cid] = m
+                except Exception as e:
+                    log.error(f"Gamma /markets error for batch starting {batch[0][:10]}...: {e}")
 
         return result
 
