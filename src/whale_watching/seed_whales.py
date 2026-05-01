@@ -17,3 +17,11 @@ SEED_WHALES = [
     ("0x507e52ef684ca2dd91f90a9d26d149dd3288beae", "GamblingIsAllYouNeed", "30d $963,321 | all-time $4,770,535"),
     ("0x6a72f61820b26b1fe4d956e17b6dc2a1ea3033ee", "kch123", "30d $847,398 | all-time $11,674,859"),
 ]
+
+# Whales filtered from active copying based on backtest evidence.
+# Kept in SEED_WHALES so we can re-evaluate later — exclusion is a separate
+# decision from "are we aware of this whale". Lowercase addresses.
+EXCLUDED_WHALES = {
+    "0x507e52ef684ca2dd91f90a9d26d149dd3288beae": "GamblingIsAllYouNeed: -5.5% ROI in backtest 2026-04-29",
+    "0xee613b3fc183ee44f9da9c05f53e2da107e3debf": "sovereign2013: -7.6% ROI in backtest 2026-04-29",
+}
